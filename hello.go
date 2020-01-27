@@ -18,7 +18,8 @@ func main(){
 	// test1()
 	// test2()
 	// test3()
-	test4()
+	// test4()
+	testGit()
 }
 
 // hello world 学习程序
@@ -52,5 +53,9 @@ func test3(){
 // 使用 string.Join
 func test4(){
 	fmt.Println("打印"+strings.Join(os.Args[1:]," "))
+}
+
+func testGit(){
+	fmt.Println("上传到github")
 }
 
