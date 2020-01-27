@@ -19,7 +19,8 @@ func main(){
 	// test2()
 	// test3()
 	// test4()
-	testGit()
+	//testGit()
+	testGit2()
 }
 
 // hello world 学习程序
@@ -58,4 +59,10 @@ func test4(){
 func testGit(){
 	fmt.Println("上传到github")
 }
+
+func testGit2(){
+	fmt.Println("测试命令：git config --global core.autocrlf false")
+}
+
+
 
