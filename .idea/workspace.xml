@@ -20,7 +20,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1Wi6twcWIcsY710NnhjBiDxSDlQ" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -43,12 +45,28 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
-  <component name="RunManager" selected="Go Build.go build learn.go">
+  <component name="RunManager" selected="Go Build.go build learn2.3.go">
     <configuration name="go build hello.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="Goworkspace" />
       <working_directory value="$PROJECT_DIR$/" />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/hello.go" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build learn2.3.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="Goworkspace" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/learn2.3.go" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build learnScan.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="Goworkspace" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/learnScan.go" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
@@ -62,6 +80,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build learn2.3.go" />
+        <item itemvalue="Go Build.go build learnScan.go" />
         <item itemvalue="Go Build.go build learn.go" />
         <item itemvalue="Go Build.go build hello.go" />
       </list>
@@ -103,22 +123,22 @@
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
     <state x="899" y="383" key="FileChooserDialogImpl/0.0.1840.1080@0.0.1840.1080" timestamp="1580218498148" />
-    <state width="1294" height="258" key="GridCell.Tab.0.bottom" timestamp="1580220440164">
+    <state width="1294" height="258" key="GridCell.Tab.0.bottom" timestamp="1580312738711">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="258" key="GridCell.Tab.0.bottom/0.0.1840.1080@0.0.1840.1080" timestamp="1580220440164" />
-    <state width="1294" height="258" key="GridCell.Tab.0.center" timestamp="1580220440164">
+    <state width="1294" height="258" key="GridCell.Tab.0.bottom/0.0.1840.1080@0.0.1840.1080" timestamp="1580312738711" />
+    <state width="1294" height="258" key="GridCell.Tab.0.center" timestamp="1580312738710">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="258" key="GridCell.Tab.0.center/0.0.1840.1080@0.0.1840.1080" timestamp="1580220440164" />
-    <state width="1294" height="258" key="GridCell.Tab.0.left" timestamp="1580220440164">
+    <state width="1294" height="258" key="GridCell.Tab.0.center/0.0.1840.1080@0.0.1840.1080" timestamp="1580312738710" />
+    <state width="1294" height="258" key="GridCell.Tab.0.left" timestamp="1580312738710">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="258" key="GridCell.Tab.0.left/0.0.1840.1080@0.0.1840.1080" timestamp="1580220440164" />
-    <state width="1294" height="258" key="GridCell.Tab.0.right" timestamp="1580220440164">
+    <state width="1294" height="258" key="GridCell.Tab.0.left/0.0.1840.1080@0.0.1840.1080" timestamp="1580312738710" />
+    <state width="1294" height="258" key="GridCell.Tab.0.right" timestamp="1580312738711">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="258" key="GridCell.Tab.0.right/0.0.1840.1080@0.0.1840.1080" timestamp="1580220440164" />
+    <state width="1294" height="258" key="GridCell.Tab.0.right/0.0.1840.1080@0.0.1840.1080" timestamp="1580312738711" />
     <state width="1013" height="116" key="GridCell.Tab.1.bottom" timestamp="1580042219654">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
@@ -143,5 +163,9 @@
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
     <state x="812" y="466" key="com.intellij.ide.util.TipDialog/0.0.1840.1080@0.0.1840.1080" timestamp="1579621554414" />
+    <state x="387" y="150" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1580312208039">
+      <screen x="0" y="0" width="1840" height="1080" />
+    </state>
+    <state x="387" y="150" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1840.1080@0.0.1840.1080" timestamp="1580312208039" />
   </component>
 </project>
