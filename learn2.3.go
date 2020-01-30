@@ -12,9 +12,9 @@ func main() {
 	// varDemo()
 	// shortVarDemo()
 	// ptVarDemo()
-	// ptVarDemo2()
+	 ptVarDemo2()
 	// ptVarDemo3()
-	 ptVarDemo4()
+	// ptVarDemo4()
 }
 
 /*
@@ -92,7 +92,10 @@ func ptVarDemo(){
 func ptVarDemo2(){
 	var p1 = f()
 	var p2 = f()
-	fmt.Printf("第一次调用f(), 返回&v : %x\n", p1)
+	fmt.Printf("第一次调用f(), 返回p1指向的值为 : %d\n", *p1)
+	*p1 = 500
+	fmt.Printf("修改p1指向的值后 : %d\n", *p1)
+	fmt.Printf("第一次调用f(), 返回&v : %x\n", p1)  // fmt.Printf("第一次调用f(), 返回&v : %x\n", p1)
 	fmt.Printf("第二次调用f(), 返回&v : %x\n", p2)
 	fmt.Printf("第三次调用f(), 返回&v : %x\n", f())
 	fmt.Printf("第四次调用f(), 返回&v : %x\n", f())
@@ -100,6 +103,7 @@ func ptVarDemo2(){
 	fmt.Printf("第六次调用f(), 返回&v : %x\n", f())
 	fmt.Printf("第七次调用f(), 返回&v : %x\n", f())
 	fmt.Printf("第八次调用f(), 返回&v : %x\n", f())
+
 	/*  机器运行结果
 
 	第一次调用f(), 返回&v : c0000140b0
@@ -115,8 +119,12 @@ func ptVarDemo2(){
 
 	fmt.Println(p1 == p2)  // false
 
-	// 总结： 函数中的变量，每一次调用时系统内存给分配的地址 会不一样，可以理解为 函数调用完毕就销毁的临时变量
-
+	//
+	/*
+	总结： 函数中的变量，每一次调用时系统内存给分配的地址 会不一样，可以理解为 函数调用完毕就销毁的临时变量 ？？？？
+	添加注释： 以上说法并不准确，函数中 v := 1 ，每执行一次函数，系统会给 v 重新分配一个地址，但该函数 v 的地址则是一直有效的，
+	可以在函数外读取，赋值等一系列操作
+	 */
 }
 
 func f() *int{
@@ -128,7 +136,7 @@ func f() *int{
 func ptVarDemo3(){
 	v :=1
 	incr(&v)
-	fmt.Printf("第一次调用incr()后， v = %d\n",v)
+	fmt.Printf("第一次调用incr()后， v = %d\n",v)  // fmt.Printf("第一次调用incr()后， v = %d\n",v)
 	incr(&v)
 	fmt.Printf("第二次调用incr()后， v = %d\n",v)
 	incr(&v)
