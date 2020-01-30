@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+var global *int   //  func varLifeCycle() 示例函数中，定义的全局变量
+
 func main() {
 	// 每一个声明有一个通用的形式
 	// var name type = expression
@@ -16,8 +18,15 @@ func main() {
 	// ptVarDemo3()
 	// ptVarDemo4()
 
-	newFuncDemo()
+	// newFuncDemo()
+	varLifeCycle();
+
 }
+
+/*
+插播一条，当不清楚输出类型用什么转义符号时，可以使用 %v
+
+ */
 
 /*
 插播一条，转义字符打印，请用 fmt.Printf()，例如：
@@ -242,4 +251,26 @@ func delta(old, new int) int {
 
 	// v := new(int)  //  new(T) 不能再使用，因为与 new 变量冲突
 	return new - old
+}
+
+// 变量的生命周期
+func varLifeCycle(){
+
+	 fmt.Printf("global 地址：%v\n", global)   // <nil>, 指针类型的默认值都是  nil, 但是不能取值
+	// fmt.Printf("global 地址：%v, global 值： %v\n", global, *global)   //错误语句
+	// 以上注意，由于全局变量只是声明，但还没有赋值，所以不能使用 *global 取值，会报异常
+	fToGlobal()
+	fmt.Printf("通过调用fToGlobal()赋值之后，global 地址：%v, global 值： %d\n", global, *global)
+}
+
+// 变量逃逸， 临时变量 x 由于将地址赋值给了 全局变量 global,所以导致函数执行完毕之后，x 的空间并没有被释放，而是从 函数中逃逸出来了
+func fToGlobal(){
+	var x int
+	x = 1
+	global = &x
+}
+// 当g()函数执行完毕之后， y 的空间就被释放。所以编译器可以安全地在栈上分配 *y, 即使使用 new函数创建它。
+func g(){
+	y := new(int)
+	*y = 1
 }
