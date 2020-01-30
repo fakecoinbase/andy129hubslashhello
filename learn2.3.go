@@ -12,9 +12,11 @@ func main() {
 	// varDemo()
 	// shortVarDemo()
 	// ptVarDemo()
-	 ptVarDemo2()
+	// ptVarDemo2()
 	// ptVarDemo3()
 	// ptVarDemo4()
+
+	newFuncDemo()
 }
 
 /*
@@ -199,3 +201,45 @@ Usage of G:\Goworkspace\learn2.3.exe:
         separator (default " ")
 
  */
+
+func newFuncDemo(){
+	// 表达式 new(T), new 只是语法上的便利，不是一个基础概念。
+	p := new(int)  // 等同于  var p int = 0
+	fmt.Printf("*p 默认值 : %d\n", *p)
+	*p = 2
+	fmt.Printf("*p 赋值后 : %d\n", *p)
+
+	// 下面两个自定义的函数  newInt(), newInt2() 返回的是一个指针，
+	// 所指的地址不同，但是地址所指的变量的值都是一样的，int 变量的默认值为 0
+	a := newInt()
+	b := newInt2()
+
+	fmt.Printf("值比较：*a == *b : %t\n", *a == *b )
+	fmt.Printf("地址比较：a == b : %t\n", a == b)
+
+	/*
+	插播一条，使用 new 函数时要注意一个 特殊情况，
+	在 go 语言中 两个变量的类型不携带任何信息且是 零值，例如 struct{} 或 [0]int， 当前的实现里面，它们有相同的地址。
+	因为最常见的未命名变量都是结构体类型，它的语法（参考4.4.1节）比较复杂，所以 new 函数使用的相对较少。
+	 */
+
+	// new 是一个预声明的函数，不是一个关键字，所以它可以重定义为另外的其他类型，例如： delta()
+	delta(3,5)
+
+}
+
+func newInt() *int{
+	return new(int)
+}
+
+func newInt2() *int{
+	var v int
+	return &v
+}
+// new 是一个预声明的函数，不是一个关键字，所以它可以重定义为另外的其他类型，例如下面的 int 类型的变量: new
+// 但 函数中当有变量的名称声明为 new 时，  new(T) 函数在这里就不能用了，导致了冲突
+func delta(old, new int) int {
+
+	// v := new(int)  //  new(T) 不能再使用，因为与 new 变量冲突
+	return new - old
+}
