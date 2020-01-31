@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1684335f-8438-4b5f-91ae-acc354b5fbad" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/learn2.4.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learn2.3.go" beforeDir="false" afterPath="$PROJECT_DIR$/learn2.3.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +48,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
-  <component name="RunManager" selected="Go Build.go build learn2.3.go">
+  <component name="RunManager" selected="Go Build.go build learn2.4.go">
     <configuration name="go build hello.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="Goworkspace" />
       <working_directory value="$PROJECT_DIR$/" />
@@ -62,6 +62,14 @@
       <working_directory value="$PROJECT_DIR$/" />
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/learn2.3.go" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build learn2.4.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="Goworkspace" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/learn2.4.go" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
@@ -83,6 +91,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build learn2.4.go" />
         <item itemvalue="Go Build.go build learn2.3.go" />
         <item itemvalue="Go Build.go build learnScan.go" />
         <item itemvalue="Go Build.go build learn.go" />
@@ -126,22 +135,22 @@
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
     <state x="899" y="383" key="FileChooserDialogImpl/0.0.1840.1080@0.0.1840.1080" timestamp="1580218498148" />
-    <state width="1294" height="255" key="GridCell.Tab.0.bottom" timestamp="1580393468669">
+    <state width="1294" height="255" key="GridCell.Tab.0.bottom" timestamp="1580476529923">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="255" key="GridCell.Tab.0.bottom/0.0.1840.1080@0.0.1840.1080" timestamp="1580393468669" />
-    <state width="1294" height="255" key="GridCell.Tab.0.center" timestamp="1580393468669">
+    <state width="1294" height="255" key="GridCell.Tab.0.bottom/0.0.1840.1080@0.0.1840.1080" timestamp="1580476529923" />
+    <state width="1294" height="255" key="GridCell.Tab.0.center" timestamp="1580476529923">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="255" key="GridCell.Tab.0.center/0.0.1840.1080@0.0.1840.1080" timestamp="1580393468669" />
-    <state width="1294" height="255" key="GridCell.Tab.0.left" timestamp="1580393468669">
+    <state width="1294" height="255" key="GridCell.Tab.0.center/0.0.1840.1080@0.0.1840.1080" timestamp="1580476529923" />
+    <state width="1294" height="255" key="GridCell.Tab.0.left" timestamp="1580476529923">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="255" key="GridCell.Tab.0.left/0.0.1840.1080@0.0.1840.1080" timestamp="1580393468669" />
-    <state width="1294" height="255" key="GridCell.Tab.0.right" timestamp="1580393468669">
+    <state width="1294" height="255" key="GridCell.Tab.0.left/0.0.1840.1080@0.0.1840.1080" timestamp="1580476529923" />
+    <state width="1294" height="255" key="GridCell.Tab.0.right" timestamp="1580476529923">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="255" key="GridCell.Tab.0.right/0.0.1840.1080@0.0.1840.1080" timestamp="1580393468669" />
+    <state width="1294" height="255" key="GridCell.Tab.0.right/0.0.1840.1080@0.0.1840.1080" timestamp="1580476529923" />
     <state width="1013" height="116" key="GridCell.Tab.1.bottom" timestamp="1580042219654">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
