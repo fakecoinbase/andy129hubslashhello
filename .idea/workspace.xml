@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1684335f-8438-4b5f-91ae-acc354b5fbad" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/learn2.5.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,6 +31,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultGoTemplateProperty" value="Go Application" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -39,7 +39,7 @@
     <property name="configurable.Module.GOPATH.is.expanded" value="false" />
     <property name="configurable.Project.GOPATH.is.expanded" value="true" />
     <property name="go.import.settings.migrated" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -47,6 +47,11 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\Goworkspace\pkg" />
+    </key>
   </component>
   <component name="RunManager" selected="Go Build.go build learn2.5.go">
     <configuration name="go build learn2.3.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -73,6 +78,14 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <configuration name="go build learn2.6.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="Goworkspace" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/learn2.6.go" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build learnScan.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="Goworkspace" />
       <working_directory value="$PROJECT_DIR$/" />
@@ -81,21 +94,13 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
-    <configuration name="go build learn.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="Goworkspace" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/learn.go" />
-      <directory value="$PROJECT_DIR$/" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build learn2.5.go" />
+        <item itemvalue="Go Build.go build learn2.6.go" />
         <item itemvalue="Go Build.go build learn2.4.go" />
         <item itemvalue="Go Build.go build learn2.3.go" />
         <item itemvalue="Go Build.go build learnScan.go" />
-        <item itemvalue="Go Build.go build learn.go" />
       </list>
     </recent_temporary>
   </component>
@@ -131,26 +136,26 @@
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
     <state x="834" y="275" key="#go_build_hello.go/0.0.1840.1080@0.0.1840.1080" timestamp="1579621093256" />
-    <state x="899" y="383" key="FileChooserDialogImpl" timestamp="1580218498148">
+    <state x="981" y="402" key="FileChooserDialogImpl" timestamp="1580556119120">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state x="899" y="383" key="FileChooserDialogImpl/0.0.1840.1080@0.0.1840.1080" timestamp="1580218498148" />
-    <state width="1294" height="255" key="GridCell.Tab.0.bottom" timestamp="1580482717008">
+    <state x="981" y="402" key="FileChooserDialogImpl/0.0.1840.1080@0.0.1840.1080" timestamp="1580556119120" />
+    <state width="1294" height="255" key="GridCell.Tab.0.bottom" timestamp="1580556693953">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="255" key="GridCell.Tab.0.bottom/0.0.1840.1080@0.0.1840.1080" timestamp="1580482717008" />
-    <state width="1294" height="255" key="GridCell.Tab.0.center" timestamp="1580482717008">
+    <state width="1294" height="255" key="GridCell.Tab.0.bottom/0.0.1840.1080@0.0.1840.1080" timestamp="1580556693953" />
+    <state width="1294" height="255" key="GridCell.Tab.0.center" timestamp="1580556693953">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="255" key="GridCell.Tab.0.center/0.0.1840.1080@0.0.1840.1080" timestamp="1580482717008" />
-    <state width="1294" height="255" key="GridCell.Tab.0.left" timestamp="1580482717008">
+    <state width="1294" height="255" key="GridCell.Tab.0.center/0.0.1840.1080@0.0.1840.1080" timestamp="1580556693953" />
+    <state width="1294" height="255" key="GridCell.Tab.0.left" timestamp="1580556693953">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="255" key="GridCell.Tab.0.left/0.0.1840.1080@0.0.1840.1080" timestamp="1580482717008" />
-    <state width="1294" height="255" key="GridCell.Tab.0.right" timestamp="1580482717008">
+    <state width="1294" height="255" key="GridCell.Tab.0.left/0.0.1840.1080@0.0.1840.1080" timestamp="1580556693953" />
+    <state width="1294" height="255" key="GridCell.Tab.0.right" timestamp="1580556693953">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
-    <state width="1294" height="255" key="GridCell.Tab.0.right/0.0.1840.1080@0.0.1840.1080" timestamp="1580482717008" />
+    <state width="1294" height="255" key="GridCell.Tab.0.right/0.0.1840.1080@0.0.1840.1080" timestamp="1580556693953" />
     <state width="1013" height="116" key="GridCell.Tab.1.bottom" timestamp="1580042219654">
       <screen x="0" y="0" width="1840" height="1080" />
     </state>
