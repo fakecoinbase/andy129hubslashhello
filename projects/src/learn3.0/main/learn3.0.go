@@ -185,6 +185,16 @@ func compareFunc(){
 	fmt.Printf("-a : %f\n", -a)  // "-5.0", a 的负数， 5.0的负数为 -5.0
 	fmt.Printf("-k : %f\n", -k)  // "5.0", k 的负数， -5.0的负数为 5.0
 
+	// 字符串之间的比较
+	var s string = "abc"
+	var str string = "abc "
+	fmt.Printf(" s == str %t\n", s == str) // "false"
+
+	// 布尔值之间的比较
+	var b bool = false
+	var bo bool    // 未赋值时默认为  false
+	fmt.Printf(" b == bo %t\n", b == bo) // "true"
+
 }
 
 
