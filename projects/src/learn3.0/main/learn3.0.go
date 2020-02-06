@@ -6,7 +6,8 @@ package main
 import "fmt"
 
 func main() {
-	intFunc()
+	// intFunc()
+	calFunc()
 }
 
 /*  整数
@@ -100,7 +101,49 @@ func intFunc(){
 
 // 上例中的 m*m  为什么会等于1 , 溢出的高位部分会无提示地丢弃。 到底是什么意思？？
 // 二元运算符
+/*
+	Go的二元操作符涵盖了算术， 逻辑，和比较等运算。按优先级的降序排列如下：
+	*   /   %   <<   >>   &   &^
+	+   -   |   ^
+	==  !=  <   <=   >   >=
+	&&
+	||
+ */
+
 func calFunc(){
+	var x int = 5
+	var y int = 2
+	var a float64 = 5.0
+	var b float64 = 2.0
+	var i int = -5
+	var j int = -2
+
+	/*
+	算术运算符 + ，- ，* ， / 可应用于整数，浮点数 和复数，
+		知识点： 而取模运算符 % 仅能 用于整数，如下例：
+
+		知识点： 就 Go而言， 取模余数的 正负号 总是与被除数一致， （ % 前面是 被除数， %后面是除数）
+		5%2， 与 5%-2 结果都是 1 ， 结果的正负号 与 被除数 5 一致，所以为 正
+	 */
+
+	fmt.Printf("int x除以 int y取余： %d\n", x%y)  // "1"， 编译正确
+	// fmt.Println(a%b) //编译报错： invalid operation : a%b (operator % not defined on float64)
+
+	fmt.Printf("int x除以 int j(负数) 取余： %d\n", x%j)  // "1"， 编译正确
+
+	/*
+		知识点： 除法运算(/)的行为 取决于操作数是否都为 整型， 整数相除，商会舍弃小数部分，
+		于是：  5.0/2.0 == 2.5  , 5/2 == 2
+	 */
+	fmt.Printf("float a除以 float b取整： %v\n", a/b)  // "2.5"， 编译正确
+	fmt.Printf("int x除以 int y取整： %d\n", x/y)  // "2"， 编译正确
+
+	/*
+		知识点： 除法运算(/)的结果的 正负号 与 平常算术题一致，有一方为 负，则为负
+	 */
+	fmt.Printf("int x除以 int j(负数)取整： %d\n", x/j)  // "-2"， 编译正确
+	fmt.Printf("int i(负数)除以 int y取整： %d\n", i/y)  // "-2"， 编译正确
+	fmt.Printf("int i(负数)除以 int j(负数)取整： %d\n", i/j)  // "2"， 编译正确
 
 }
 
