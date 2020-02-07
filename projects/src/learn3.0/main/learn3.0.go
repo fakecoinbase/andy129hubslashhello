@@ -11,7 +11,8 @@ func main() {
 	// compareFunc()
 	// offsetFunc()
 	// testIntForIndex()
-	typeConvertFunc()
+	// typeConvertFunc()
+	OXconvertFunc()
 }
 
 /*  整数
@@ -310,6 +311,25 @@ func typeConvertFunc(){
 	a:= 1e100   // float64 类型
 	b:= int(f)  // 应当避免这种强制转换
 	fmt.Println(a,b)
+}
 
+/*
+	不论有无大小和符号限制， 源码中的整数都能写成常见的十进制数； 也能写成 八进制数，以 0 开头，如 0666；
+	还能写成十六进制数， 以 0x 或 0X 开头， 如 0xdeadbeef 。
+	十六进制的数字 (或字母)大小写皆可。 当前，八进制数似乎仅有一种用途 ---- 表示 POSIX 文件系统的权限 ---
+	而十六进制数广泛用于强调其位模式，而非数值大小。
+ */
+func OXconvertFunc(){
+
+	a := 0666   // 八进制
+	/*
+		一般来说，一个转义符对应一个要打印的变量，那为什么下面 有三个转义符 %d, %[1]o, %#[1]o ，却只有一个 变量 a
+		说明：  注意 fmt 的两个技巧。 通常 Printf 的格式化字符串含有多个 %谓词， 这要求提供相同数目的操作数，
+			而 % 后的副词 [1]告知 Printf 重复使用第一个操作数，也就是重复使用 a 这个操作数。
+			其次，%o, %x, 或 %X 之前的副词 # 告知 Printf 输出对应的 前缀 0, 0x 或 0X
+	 */
+	fmt.Printf("%d %[1]o %#[1]o\n", a)   // "438 666 0666"
+	b := int64(0xdeadbeef)  // 将 16进制强制转换为 int64
+	fmt.Printf("%d %[1]x %#[1]x %#[1]X\n", b) // "3735928559 deadbeef 0xdeadbeef 0XDEADBEEF
 
 }
