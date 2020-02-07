@@ -12,7 +12,9 @@ func main() {
 	// offsetFunc()
 	// testIntForIndex()
 	// typeConvertFunc()
-	OXconvertFunc()
+	// OXconvertFunc()
+	runeLiteralFunc()
+
 }
 
 /*  整数
@@ -331,5 +333,22 @@ func OXconvertFunc(){
 	fmt.Printf("%d %[1]o %#[1]o\n", a)   // "438 666 0666"
 	b := int64(0xdeadbeef)  // 将 16进制强制转换为 int64
 	fmt.Printf("%d %[1]x %#[1]x %#[1]X\n", b) // "3735928559 deadbeef 0xdeadbeef 0XDEADBEEF
+}
+
+/*
+	源码中，文字符号(rune literal) 的形式是字符写在 一对单引号内。最简单的例子就是 ASCII 字符，如 'a'，
+	但也可以直接使用 Unicode 码点 (codepoint) 或码值转义， 稍后有介绍。
+ */
+func runeLiteralFunc(){
+
+	ascii:= 'a'
+	unicode:= '国'
+	newline:= '\n'
+
+	// %c 输出文字符号 ， 如果希望输出带有 单引号则用 %q
+	fmt.Printf("%d %[1]c %[1]q\n", ascii)  // "97 a 'a'"
+	fmt.Printf("%d %[1]c %[1]q\n", unicode)  // "22269 国 '国'"
+	fmt.Printf("%d %[1]q\n", newline) // "10 '\n'"
+	// 将 '\n' 以 %c 打印出来时，会直接换行
 
 }
