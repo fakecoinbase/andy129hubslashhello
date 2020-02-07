@@ -10,7 +10,8 @@ func main() {
 	// calFunc()
 	// compareFunc()
 	// offsetFunc()
-	testIntForIndex()
+	// testIntForIndex()
+	typeConvertFunc()
 }
 
 /*  整数
@@ -226,6 +227,7 @@ func compareFunc(){
 func offsetFunc(){
 	var x uint8 = 1<<1 | 1<<5
 	var y uint8 = 1<<1 | 1<<2
+	// %08b 可以理解为 以八进制打印
 	fmt.Printf("%08b\n", x) // "00100010" ，集合 {1,5}
 	fmt.Printf("%08b\n", y) // "00000110" ，集合 {1,2}
 
@@ -274,3 +276,40 @@ func testIntForIndex(){
 		1，无符号整数往往只用于 位运算符和 特定算术运算符， 如实现位集时，解析二进制格式的文件，或 散列和加密。
 			一般而言，无符号整数极少用于表示非负值。
  */
+
+/*
+	通常，将某种类型的值转换成另一种， 需要显式转换。对于算术和逻辑（不含位移）的二元运算符，其操作数的类型必须相同。
+	虽然这有时会导致表达式相对冗长，但是一整类错误得以避免，程序也更容易理解。
+ */
+func typeConvertFunc(){
+	var apples int32 = 1
+	var oranges int16 = 2
+
+	// var compote int = apples + oranges  // 编译错误， apples 与 oranges 类型不匹配
+
+	// 类型不匹配的问题 有几种方法改正， 最直接地，将全部操作数转换成 同一类型：
+	var compote = int(apples) +  int(oranges)   // 强制转换为 int
+	fmt.Println(compote)  // "3"
+
+	/*
+		整型与浮点型 之间的转换，可能改变值或 损失精度
+	 */
+
+	f:= 3.141
+	i:= int(f)
+	fmt.Println(f,i) // "3.141 3"
+	f = 1.99
+	fmt.Println(int(f))  // "1"
+
+	/*
+		浮点型转成 整型， 会舍弃小数部分， 趋零截尾(正值向下取整， 负值向上取整)。
+		如果有些转换的操作数的值超出了 目标类型的取值范围，就应当避免这种转换，
+		因为其行为依赖具体实现：
+	 */
+
+	a:= 1e100   // float64 类型
+	b:= int(f)  // 应当避免这种强制转换
+	fmt.Println(a,b)
+
+
+}
