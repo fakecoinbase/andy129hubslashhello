@@ -9,7 +9,8 @@ func main() {
 	// intFunc()
 	// calFunc()
 	// compareFunc()
-	offsetFunc()
+	// offsetFunc()
+	testIntForIndex()
 }
 
 /*  整数
@@ -247,4 +248,29 @@ func offsetFunc(){
 	因此， 请注意，如果将整数以位模式处理， 须使用无符号整型。
  */
 
+/*
+	尽管Go 具备无符号整型数和 相关算术运算，也尽管某些量值不可能为负， 但是我们往往还采用有符号整型数，
+	如数组的长度（即便直观上明显更应该选用 uint）。下列从后向前输出奖牌名称，循环里用到了内置的 len 函数，
+	它返回有符号整数：
+ */
 
+func testIntForIndex(){
+	medals := []string{"gold","silver","bronze"}
+	for i:= len(medals) - 1; i>=0;i-- {
+		/*
+			问： 一般来说，数组的长度不可能为负，所以 直观上应该将 i 定义为一个 无符号类型 uint,
+			但这里为什么用的还是 int  (len(medals) 返回 int 型)？？？
+			答： 假若  len 返回的结果是无符号整数，就会导致严重错误， 因为 i 随之也成为 uint 型，
+				根据定义，条件 i>=0 将恒成立。
+			第3轮迭代后， 有 i==0， 语句 i-- 使得 i 变为 uint型的最大值（例如，可能位 2的64次方-1），而不是 -1，
+			这就导致了 medals[i] 试图越界访问元素，超出 slice 范围，引发运行失败或 宕机.
+		 */
+		fmt.Println(medals[i])  // "bronze", "silver", "gold"
+	}
+}
+
+/*
+	位运算符使用总结：
+		1，无符号整数往往只用于 位运算符和 特定算术运算符， 如实现位集时，解析二进制格式的文件，或 散列和加密。
+			一般而言，无符号整数极少用于表示非负值。
+ */
