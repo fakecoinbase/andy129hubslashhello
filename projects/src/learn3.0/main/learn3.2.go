@@ -12,7 +12,8 @@ func main() {
 	fmt.Println("learn3.2")
 	// floatVarFunc()
 	// floatPrintFunc()
-	floatPrintFunc2()
+	// floatPrintFunc2()
+	floatNaNFunc()
 }
 
 func floatVarFunc(){
@@ -102,4 +103,43 @@ func floatPrintFunc2(){
 // 将 float 转换为字符串
 func floatConvertStr(a float64) string{
 	return strconv.FormatFloat(a, 'f', -1, 64)
+}
+
+/*
+	除了大量常见的数学函数之外， math 包还有函数用于创建和判断 IEEE754 标准定义的特殊值：
+	正无穷大(+Inf) 和 负无穷大(-Inf)， 它表示超出最大许可值的数及除以零的商；
+	以及NaN (Not a Number), 它表示数学上无意义的运算结果 (如 0/0 或 Sqrt(-1))
+ */
+func floatNaNFunc(){
+	var z float64
+	fmt.Printf("float64 默认值： %g\n", z)  // float64 默认值： 0
+
+	fmt.Println(z, -z, 1/z, -1/z, z/z)  // "0 -0 +Inf -Inf NaN"
+	//  0, -0, 1/0, -1/0, 0/0
+
+
+	// 延伸扩展：  如果 换成 int型，进行 以上相同操作时，会有  +Inf, -Inf, NaN 这种值吗？
+	var a int64
+	fmt.Printf("int64 默认值： %d\n", a)  // int64 默认值： 0
+	fmt.Println(a, -a)  // "0 0"   // 注意这里与 float 的区别，这里不是 -0
+
+	/*
+	fmt.Println(1/a)   // 运行报错， 整形在进行 /， % 操作时，除数都不能为0，不然就会报错
+	fmt.Println(-1/a)  // 运行报错， 整形在进行 /， % 操作时，除数都不能为0，不然就会报错
+	fmt.Println(a/a)   // 运行报错， 整形在进行 /， % 操作时，除数都不能为0，不然就会报错
+	*/
+
+	nan := math.NaN()
+	fmt.Println(nan)  // "NaN"
+	fmt.Println(nan == nan, nan < nan, nan > nan) // "false false false"
+
+	/*  为什么 nan == nan 是 false ?
+
+		math.IsNaN 函数判断其参数是否是  非数值， math.NaN 函数则返回非数值 (NaN)。
+		在数字运算中， 我们倾向于将 NaN 当作信号值(sentinel value)，
+
+		但直接判断具体的计算结果是否为 NaN 可能导致潜在错误，因为与 NaN 的比较总不成立 (除了!=，它总是与 == 相反)
+
+	 */
+	fmt.Println(nan != nan)    // "true"    // (除了!=，它总是与 == 相反)
 }
