@@ -143,3 +143,15 @@ func floatNaNFunc(){
 	 */
 	fmt.Println(nan != nan)    // "true"    // (除了!=，它总是与 == 相反)
 }
+
+// 浮点数的运算写法
+// 多个参数，多个返回值
+func convert(i float64, j float64) (float64, float64){
+
+	return 0,0
+}
+// 参数如果是同样类型，可以省略简写
+func convert2(i,j float64) float64 {
+
+	return 0.0  // 0 或者  0.0 都可以
+}
