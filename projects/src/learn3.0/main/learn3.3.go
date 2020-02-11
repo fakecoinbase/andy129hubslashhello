@@ -2,7 +2,11 @@ package main
 
 import (
 	"fmt"
+	"image"
+	"image/color"
+	"image/png"
 	"math/cmplx"
+	"os"
 )
 
 // //学习第三章--3.3-复数
@@ -27,7 +31,25 @@ import (
 func main() {
 
 	fmt.Println("learn3.3")
-	complexVar()
+	// complexVar()
+
+	// 曼德勃罗特集 是人类有史以来做出的最奇异，最瑰丽的几何图形，曾被称为“上帝的指纹”
+	// 输出到终端上 全是乱码
+	const (
+		xmin, ymin, xmax, ymax = -2, -2, +2, +2
+		width, height = 1024, 1024
+	)
+	img := image.NewRGBA(image.Rect(0,0,width,height))
+	for py:=0; py<height; py++ {
+		y := float64(py)/height*(ymax - ymin) + ymin
+		for px:=0; px<width; px++ {
+			x:= float64(px)/width*(xmax-xmin)+ xmin
+			z:= complex(x,y)
+			// 点(px,py) 表示复数值 z
+			img.Set(px,py,mandelbrot(z))
+		}
+	}
+	png.Encode(os.Stdout, img)  // 在终端上全是乱码，如何解决？
 }
 
 /*
@@ -71,5 +93,19 @@ func complexVar(){
 	fmt.Println(cmplx.Sqrt(2))     // "(1.4142135623730951+0i)"
 	fmt.Println(cmplx.Sqrt(-5i))   // "(1.5811388300841898-1.5811388300841898i)"
 	fmt.Println(cmplx.Sqrt(3+4i))  // "(2+1i)"
+}
 
+// 曼德勃罗集
+func mandelbrot(z complex128) color.Color{
+	const iterations = 200
+	const contrast = 15
+
+	var v complex128
+	for n:= uint8(0); n<iterations; n++ {
+		v = v*v + z
+		if cmplx.Abs(v) > 2 {
+			return color.Gray{255 - contrast*n}
+		}
+	}
+	return color.Black
 }
