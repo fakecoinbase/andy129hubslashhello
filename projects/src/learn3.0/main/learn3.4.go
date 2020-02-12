@@ -6,7 +6,7 @@ import "fmt"
 func main() {
 	fmt.Println("learn3.4")
 	boolVarFunc()
-	
+
 }
 
 func boolVarFunc(){
