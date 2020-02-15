@@ -6,7 +6,7 @@ import (
 	"unicode/utf8"
 )
 
-// 学习第三章--3.4-字符串--UTF-8
+// 学习第三章--3.5-字符串--UTF-8
 func main() {
 	fmt.Println("learn3.5.3")
 

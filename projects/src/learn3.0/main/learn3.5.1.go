@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// 学习第三章--3.4-字符串--字符串字面量
+// 学习第三章--3.5-字符串--字符串字面量
 
 /*	 ASCII 与  Unicode 的区别
 

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// 学习第三章--3.4-字符串
+// 学习第三章--3.5-字符串
 func main() {
 	fmt.Println("learn3.5")
 

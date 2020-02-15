@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// 学习第三章--3.4-字符串--Unicode
+// 学习第三章--3.5-字符串--Unicode
 func main() {
 	fmt.Println("learn3.5.2")
 
