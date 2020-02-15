@@ -50,7 +50,12 @@ func main() {
 
 	fmt.Printf("警告或 响铃\a")
 	fmt.Printf("\n")
-	fmt.Printf("退格符a\b"+"abc")  // "退格符abc"  // 目前测试来看，退格符会将字符串倒退一个字节，如遇到中文会麻烦一些
+	fmt.Printf("退格符a\b"+"abc")
+	/*
+		"退格符abc"  // 目前测试来看，退格符会将字符串倒退一个字节，
+		如遇到中文则会倒退一个中文字符, (顺便提一下，go 语言中一个中文占 3个字节)
+		fmt.Printf("退格符\b"+"abc")   // "退格abc"
+	 */
 	fmt.Printf("\n")
 	fmt.Printf("换行符\n")            //  这个很好理解，经常用
 	fmt.Printf("\n")
