@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"unicode/utf8"
 )
 
 // 学习第三章--3.4-字符串--UTF-8
@@ -74,6 +75,9 @@ func main() {
 	fmt.Println("isContain : ", isContain)   // "false"
 	fmt.Println("isContain2 : ", isContain2) // "true"
 
+	// lenStr()
+	lenStr2()
+
 }
 
 /*
@@ -105,3 +109,141 @@ func Contains(s, substr string) bool{
 (上面的函数取自 strings 包，其实Contains 函数的具体实现适用了 散列方法让搜索更高效。)
 
  */
+
+
+/*
+	另一方面，如果我们真的要逐个逐个处理 Unicode 字符， 则必须使用其他编码机制。
+	考虑我们第一个例子的字符串 (见 3.5.1节)，它包含两个东亚字符。
+ */
+
+func lenStr() {
+
+	s:= "Hello, 世界"
+	fmt.Println(len(s))   // 13
+	// 字符串中的 字节长度  （中文 “世界” 占6个字节）
+
+	fmt.Println(utf8.RuneCountInString(s))  // 9
+	// 按照UTF-8 解读, 本质是 9个码点或文字符号的编码 （中文 “世界” 就2个码点）
+
+	// 我们需要 UTF-8 解码器来处理这些字符， unicode/utf8 包就具备一个：
+
+	for i:=0; i<len(s); {
+		r, size := utf8.DecodeRuneInString(s[i:])
+		fmt.Printf("%d\t%c\t%d\n", i , r , size)   // 对应的下标值， 字符， 所占字节
+		i += size
+	}
+
+	/*   打印信息如下：
+
+		0       H       1
+		1       e       1
+		2       l       1
+		3       l       1
+		4       o       1
+		5       ,       1
+		6               1
+		7       世      3
+		10      界      3
+
+	*/
+
+	// 通过下标取值
+	fmt.Println(s[7:10])  // "世"
+	fmt.Println(s[10:])   // "界"
+
+	/*
+		每次 DecodeRuneInString 的调用都返回 r (文字符号本身) 和 一个值 (表示 r 按 UTF-8 编码所占用的字节数)。
+		这个值用来更新下标 i ， 定位字符串内的下一个文字符号。 可是按此方法，我们总是需要使用上例中的循环模式。
+		所幸， Go 的 range 循环也适用于字符串，按UTF-8 隐式解码。 注意，对于非 ASCII 文字字符，下标增量大于1.
+	 */
+
+	for i,r:= range "Hello, 世界" {
+		fmt.Printf("%d\t%q\t%d\n", i, r, r)
+	}
+
+	/*  打印信息如下：
+
+		0       'H'     72
+		1       'e'     101
+		2       'l'     108
+		3       'l'     108
+		4       'o'     111
+		5       ','     44
+		6       ' '     32
+		7       '世'    19990
+		10      '界'    30028
+
+	 */
+
+	// 我们可用简单的 range 循环统计字符串中的文字符号数目， 如下所示：
+	n :=0
+	for _, _ = range "Hello, 世界" {
+		n++
+	}
+	fmt.Printf("%d\n", n)    //  9   // 以 UTF-8编码解读
+
+	// 与其他形式的 range 循环一样， 可以忽略没用的变量:
+	f := 0
+	for range s {
+		f++
+	}
+	fmt.Printf("%d\n", f)    //  9   // 以 UTF-8编码解读
+
+	// 或者，直截了当地调用 utf8 的函数
+	count := utf8.RuneCountInString("Hello, 世界")
+	fmt.Printf("%d\n", count)   //  9
+}
+
+
+func lenStr2() {
+	s:= "プログラム"    // 中文“程序” 的日语，  unicode
+	for i,r:= range s {  //  以 UTF-8 编码 遍历 字符串， 同 中文操作一样
+		fmt.Printf("%d\t%q\t%d\n", i, r, r)
+	}
+
+	/*  打印信息如下：
+
+		0       'プ'    12503
+		3       'ロ'    12525
+		6       'グ'    12464
+		9       'ラ'    12521
+		12      'ム'    12512
+
+	*/
+
+	/*
+		以下 Printf 里的谓词 %x (注意，% 和 x 之间有空格) 以十六进制数形式输出， 并在每两个数位间插入空格。
+	 */
+	fmt.Printf("% x\n", s)   //  "e3 83 97 e3 83 ad e3 82 b0 e3 83 a9 e3 83 a0"
+
+	r:=[]rune(s)
+	fmt.Printf("%x\n", r)    //  "[30d7 30ed 30b0 30e9 30e0]"  // UTF-8 编码, 与上面对比着来看
+
+	/*
+		如果把文字符号类型的 slice 转换成一个字符串， 它会输出各个文字符号的 UTF-8 编码拼接结果：
+	*/
+	fmt.Println(string(r))   //  "プログラム"
+
+	// 若将一个整数值转换成 字符串， 其值按文字符号类型解读，并且产生代表该文字符号值的 UTF-8 码：
+	fmt.Println(string(65))   // "A"    // 而不是 "65"
+	fmt.Println(string(0x4eac))  // "京"
+
+	// 如果文字符号值非法， 将被专门的替换字符取代
+	fmt.Println(string(1234567))   // �
+
+	/*
+		之前提到过，文本字符串作为按 UTF-8 编码的 Unicode 码点序列解读，很大程度是出于习惯，
+		但为了确保使用 range 循环能正确处理字符串，则必须要求而不仅仅是按照习惯。
+		如果字符串含有任意二进制数，也就是说， UTF-8 数据出错，而我们对它做 range 循环，会发生什么？
+
+		每次 UTF-8 解码器读入一个不合理的字节，无论是显式调用 utf8.DecodeRuneInString,
+		还是在 range 循环内隐式读取，都会产生一个专门的 Unicode 字符 '\uFFFD' 替换它，
+		其输出通常是个黑色六角形或 类似砖石的形状， 里面有个白色问号。
+		如果程序碰到这个文字符号值，通常意味着，生成字符串数据的系统上游部分在处理文本编码方面存在瑕疵。
+
+		UTF-8是一种分外便捷的交互格式， 而在程序内部使用文字字符类型可能更加方便，
+		因为它们大小一致，便于在数组和 slice 中用下标访问。
+	 */
+
+}
+
