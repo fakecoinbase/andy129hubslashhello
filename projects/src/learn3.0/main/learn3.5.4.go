@@ -12,7 +12,8 @@ func main() {
 
 	//stringPrint()
 	//stringPrint2()
-	stringPrint3()
+	//stringPrint3()
+	stringReverse()
 }
 
 func stringPrint(){
@@ -66,4 +67,20 @@ func NumberFormat(str string) string {
 	}
 	return strings.Join(arr, ".")
 	//最后将 arr[0] 与 arr 里面其它数组元素进行拼接，将一系列字符串连接为一个字符串，之间用sep来分隔。
+}
+
+func stringReverse(){
+
+	a := "Hello, 世界"
+	println(a)
+	println(Reverse(a))   // "界世 ,olleH"
+}
+
+//  反转字符串
+func Reverse(s string) string {
+	r := []rune(s)  // 为了能够处理字符串里面包含中文的情况，这里使用rune进行处理。
+	for i, j := 0, len(r)-1; i < j; i, j = i+1, j-1 {
+		r[i], r[j] = r[j], r[i]   // 首位和最后一位替换，以此类推。。。
+	}
+	return string(r)  // 将字节数组转换为 string
 }
