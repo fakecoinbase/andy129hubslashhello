@@ -169,3 +169,30 @@ func strAndByteArr(){
 	s2:= string(b)
 	fmt.Println(s2)  // "abc"
 }
+/*
+	概念上，[]byte(s) 转换操作会分配新的字节数组，拷贝填入 s 含有的字节，并生成一个 slice 引用，指向整个数组。
+	具备优化功能的编译器在某些情况下可能会避免分配内存和复制内容，但一般而言，复制有必要确保 s 的字节维持不变
+	(即使b 的字节在转换后发生改变)。反之，用 string(b) 将字节slice 转换成字符串也会产生一份副本，保证 s2 也不可变。
+
+	为了避免转换和不必要的内存分配， bytes包和 strings 包都预备了许多对应的实用函数 (utility function)，
+	它们两两相对应。例如，strings 包具备下面 6 个函数：
+
+	func Contains(s, substr string) bool
+	func Count(s, sep string) int
+	func Fields(s string) []string
+	func HasPrefix(s, prefix string) bool
+	func Index(s, sep string) int
+	func Join(a []string, sep string) string
+
+	bytes 包里面的对应函数为：
+
+	func Contains(b, subslice []byte) bool
+	func Count(s, sep []byte) int
+	func Fields(s []byte) [][]byte
+	func HasPrefix(s, prefix []byte) bool
+	func Index(s, sep []byte) int
+	func Join(s [][]byte, sep []byte) []byte
+
+	唯一的不同是，操作对象由字符串变为字节 slice.
+
+ */
