@@ -28,7 +28,8 @@ func main() {
 	//stringPrint2()
 	//stringPrint3()
 	//stringReverse()
-	stringSplit()
+	//stringSplit()
+	strAndByteArr()
 }
 
 func stringPrint(){
@@ -159,4 +160,12 @@ func basename2(s string) string{
 		s = s[:dot]
 	}
 	return s
+}
+
+// 字符串可以和字节 slice 相互转换：
+func strAndByteArr(){
+	s:= "abc"
+	b:= []byte(s)   // 如有中文，可以使用 []rune(s)
+	s2:= string(b)
+	fmt.Println(s2)  // "abc"
 }
