@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 )
@@ -29,7 +30,8 @@ func main() {
 	//stringPrint3()
 	//stringReverse()
 	//stringSplit()
-	strAndByteArr()
+	//strAndByteArr()
+	intsToStringFunc()
 }
 
 func stringPrint(){
@@ -196,3 +198,40 @@ func strAndByteArr(){
 	唯一的不同是，操作对象由字符串变为字节 slice.
 
  */
+
+func intsToStringFunc(){
+
+	a:= []int{1,2,3}
+	fmt.Println(intsToString(a))   // "[1,2,3]"
+}
+
+/*
+	bytes 包为高效处理字节 slice 提供了 Buffer 类型。 Buffer 起初为空，其大小随着各种类型数据的写入而增长，
+	如 string、byte 和 []byte。 如下例所示， bytes.Buffer 变量无须初始化，原因是 零值 本来就有效：
+
+	若要在 bytes.Buffer 变量后面添加任意文字符号的UTF-8 编码，最好使用 bytes.Buffer 的 WriteRune 方法，
+	而追加 ASCII 字符， 如 '[' 和 ']'，则使用 WriteByte 亦可。
+
+	bytes.Buffer 类型用途极广， 在第7章讨论接口的时候， 假若 I/O 函数需要一个字节接收器（io.Writer）或字节发生器(io.Reader),
+	我们将看到能如何用其来代替文件，其中接收器的作用就如上例中的 Fprintf 一样。
+ */
+
+// intsToString 与 fmt.Sprint(values)类似，但插入了逗号
+func intsToString(values []int) string {
+	var buf bytes.Buffer
+	buf.WriteByte('[')
+	//buf.WriteString("开始")   // 也可以插入中文等 Unicode 码
+	//buf.WriteString("こんにちは")
+	// range 用来遍历数组和切片的时候返回索引和元素值
+	// 如果我们不要关心索引可以使用一个下划线(_)来忽略这个返回值, 例如可以将下面的 i ，替换成 _
+	for i,v:=range values {
+		if i>0 {
+			buf.WriteString(",")
+		}
+		fmt.Fprintf(&buf, "%d", v)
+	}
+	buf.WriteByte(']')
+	//buf.WriteString("结束") // 也可以插入中文等 Unicode 码
+	//buf.WriteString("さようなら")
+	return buf.String()
+}
