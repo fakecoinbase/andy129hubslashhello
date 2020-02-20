@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"strings"
+	"unicode/utf8"
 )
 
 const sample = ` .bd.b2.3d.bc.20.e2.8c.98`    // 网上参考的示例 未达到效果
@@ -31,7 +32,8 @@ func main() {
 	//stringReverse()
 	//stringSplit()
 	//strAndByteArr()
-	intsToStringFunc()
+	//intsToStringFunc()
+	runeFunc()
 }
 
 func stringPrint(){
@@ -234,4 +236,36 @@ func intsToString(values []int) string {
 	//buf.WriteString("结束") // 也可以插入中文等 Unicode 码
 	//buf.WriteString("さようなら")
 	return buf.String()
+}
+
+/*   了解 rune 类型
+	// rune is an alias for int32 and is equivalent to int32 in all ways. It is
+	// used, by convention, to distinguish character values from integer values.
+
+	//int32的别名，几乎在所有方面等同于int32
+	//它用来区分字符值和整数值
+
+	type rune = int32
+
+	golang中还有一个byte数据类型与rune相似，它们都是用来表示字符类型的变量类型。它们的不同在于：
+
+	byte 等同于int8，常用来处理ascii字符
+	rune 等同于int32,常用来处理unicode或utf-8字符
+
+ */
+
+func runeFunc(){
+
+	var str = "hello 你好"
+
+	//golang中string底层是通过byte数组实现的，座椅直接求len 实际是在按字节长度计算  所以一个汉字占3个字节算了3个长度
+	fmt.Println("len(str):", len(str))  // "12"
+
+	//以下两种都可以得到str的字符串长度
+
+	//golang中的unicode/utf8包提供了用utf-8获取长度的方法
+	fmt.Println("RuneCountInString:", utf8.RuneCountInString(str))   // "8"
+
+	//通过rune类型处理unicode字符
+	fmt.Println("rune:", len([]rune(str)))   // "8"
 }
