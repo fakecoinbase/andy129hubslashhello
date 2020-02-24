@@ -31,6 +31,7 @@ const (
 func main() {
 
 	fmt.Println("KiBandKB")
+	//fmt.Println(YB)  // 输出报错    //  "constant 1000000000000000000000000 overflows int"
 }
 
 /*
