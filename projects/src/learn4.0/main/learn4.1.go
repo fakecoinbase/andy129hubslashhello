@@ -37,7 +37,8 @@ func main() {
 	// arrayFunc6()
 	// arrayFunc7()
 	// arrayFunc8()
-	arrayFunc9()
+	// arrayFunc9()
+	arraySliceFunc()
 }
 
 /*
@@ -373,4 +374,41 @@ func arrayFunc9(){
 	len:= len(a)    // 数组长度
 	cap:= cap(a)    // 数组容量
 	fmt.Printf("cap: %d , len: %d\n",cap,len)   // "cap: 5 , len: 5"
+}
+
+// 深入理解数组截取后子串的 容量和长度关系
+func arraySliceFunc(){
+	a:= [10]int{1,2,3,4,5,6,7,8,9,10}
+	b:= a[3:7]   //  截取数组 a[i:j] 并赋值给 b
+	fmt.Println(b)                // "[4 5 6 7]"
+	fmt.Println(cap(b), len(b))   // "7 4"
+	/*  数组b 属于 数组a 的子串
+	数组b 的长度 len(b)，就是数组b 里面实际的数组个数，a[i:j],  数组长度： j-i == 7-3 == 4
+	数组b 的容量 cap(b), 就是从数组b 中的第一个元素的下标 i 到 母串(原始 a 的数组)的结尾，数组容量：cap(a)-i == 10-3 == 7
+	*/
+
+	fmt.Println(b[:4])            // "[4 5 6 7]"     // 取 子串b 中的下标为0 到下标为 4-1 的所有元素，元素个数为： 4-0
+	fmt.Println(b[:6])            // "[4 5 6 7 8 9]"
+	/*
+		从 cap(b) 得出b 的容量为 7，len(b) 得出 b 的长度为 4, 所以 b[:6] ， 6 超过 长度但没有 超过容量，所以
+
+		b[:6] 会得到一个长度大于 b 的数组。
+	*/
+
+	// fmt.Println(b[5:8])   // 运行报错： panic: runtime error: slice bounds out of range [:8] with capacity 7
+	/*
+		b[5:8] , b[i:j]
+		j 大于 cap(b)== 7, 所以导致程序宕机。
+	*/
+
+	// 将子串 b 再分割，遵循以上所有规则， cap, len
+	c:= b[2:6]
+	fmt.Println(c)                 // "[6 7 8 9]"
+	fmt.Println(cap(c), len(c))    // "5 4"
+	fmt.Println(c[:5])             // "[6 7 8 9 10]"
+
+	/*
+		总结：如果 slice 的引用超过了被引用对象的容量，即 cap(s), 那么会导致程序宕机；
+		但是如果slice 的引用超出了被引用对象的长度，即 len(s)， 那么最终 slice 会比原 slice 长：
+	*/
 }
