@@ -36,7 +36,8 @@ func main() {
 	// arrayFunc5()
 	// arrayFunc6()
 	// arrayFunc7()
-	arrayFunc8()
+	// arrayFunc8()
+	arrayFunc9()
 }
 
 /*
@@ -360,3 +361,16 @@ func zero4(ptr *[]byte){
 	上面关于 SHA256 的例子中，摘要的结果拥有固定的长度，我们可以使用数组作为函数参数或结果，但是更多的情况下，
 	我们使用 slice。 示例见 4.2 slice
  */
+
+// 数组的截取 与 len(), cap() 函数使用
+func arrayFunc9(){
+	a:= [5]int{1,2,3,4,5}
+	b:= a[2:]   // 截取数组 a ，从下标为2 的元素开始截取到最后
+	c:= a[:]    // 截取数组 a ，从默认开始位置到结束位置，也就是全部数组元素
+	fmt.Println(c)   // "[1 2 3 4 5]"
+	fmt.Println(b)   // "[3 4 5]"
+
+	len:= len(a)    // 数组长度
+	cap:= cap(a)    // 数组容量
+	fmt.Printf("cap: %d , len: %d\n",cap,len)   // "cap: 5 , len: 5"
+}
