@@ -35,10 +35,10 @@ func main() {
 	// arrayFunc4()
 	// arrayFunc5()
 	// arrayFunc6()
-	// arrayFunc7()
+	arrayFunc7()
 	// arrayFunc8()
 	// arrayFunc9()
-	arraySliceFunc()
+	// arraySliceFunc()
 }
 
 /*
@@ -274,6 +274,38 @@ func arrayFunc7(){
 		数组定义，数组作为参数，数组进入函数赋值给另一个数组， 这三个变量的地址都不相同？
 		当地址都不相同的时候，在函数中对数组的操作，那又是如何影响到 最开始定义的原数组呢？
 	 */
+
+	d := [...]int{1,2,3}          // 数组加 ... 初始化长度时 特征与 [3]int{1,2,3} 类似，作为参数时都是 以值 传递
+	handleArrValueFunc(d)         // 编译正常
+	fmt.Println("d值传递，处理后：", d)   // "[1,2,3]"
+	// handleArrReferFunc(d)      // 编译错误：Cannot use 'd'(type [3]int) as type []int
+
+	/*  重大发现：
+		1, [3]int{1,2,3}  与 [...]int{1,2,3}  类似，都是初始化了数组的长度，虽然 后者是省略号
+		2, [3]int{1,2,3}  与 [...]int{1,2,3} 作为参数时都是 值传递，在函数中对数组进行修改 不会改动到 原数组
+		3，[]int{1,2,3} 作为参数时 是 引用传递，在函数中对数组进行修改时，会改动到 原数组
+		4，[]int{1,2,3} 与 [3]int{1,2,3} 是不同的两种类型，所以作为参数传递时，不能进行转换
+				[]int{} , [3]int{}
+		5, 但是无意中我发现了 下面的写法:
+			当 [3]int{} 值传递 写成 [:] 作为参数传入时， 可以转变为 引用传递。
+			但是 []int{} 引用传递 想传入 [3]int 时，就会导致传参失败，编译不通过。
+
+			所以总结一下，
+				只要是 函数参数定义为 []int ，则代表这函数是 进行引用传递的，可以接收的类型如下：
+					[3]int{}, [...]int{}, []int{}, 前两者作为参数传入时 需要写成 [:]
+				函数参数定义为 [3]int, 则代表这函数是 进行值传递的，可以接收的类型如下：
+					[3]int，[...]int{}
+	 */
+	handleArrReferFunc(a[:])
+	handleArrReferFunc(d[:])
+	handleArrReferFunc(c[:])
+
+	fmt.Println("值传递，处理后：", a)
+	fmt.Println("值传递，处理后：", d)
+	fmt.Println("值传递，处理后：", c)
+
+	// handleArrValueFunc(c[:])   // []int{} 想转换成 [3]int{}，不成功，编译失败。
+
 }
 // 数组作为参数时的 值传递
 func handleArrValueFunc(a [3]int) {
