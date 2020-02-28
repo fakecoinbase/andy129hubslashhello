@@ -35,10 +35,11 @@ func main() {
 	// arrayFunc4()
 	// arrayFunc5()
 	// arrayFunc6()
-	arrayFunc7()
+	// arrayFunc7()
 	// arrayFunc8()
 	// arrayFunc9()
 	// arraySliceFunc()
+	arraySliceFunc2()
 }
 
 /*
@@ -442,5 +443,26 @@ func arraySliceFunc(){
 	/*
 		总结：如果 slice 的引用超过了被引用对象的容量，即 cap(s), 那么会导致程序宕机；
 		但是如果slice 的引用超出了被引用对象的长度，即 len(s)， 那么最终 slice 会比原 slice 长：
+	*/
+}
+
+// slice 的创建，初始化规则  [low:high:max]
+func arraySliceFunc2(){
+
+	a := [...]int{0,1,2,3,4,5}
+
+	a2 := a[2:3:4]  // {low:high:max}   low<=high<=max
+	fmt.Println(a2)
+	fmt.Println(len(a2), cap(a2))
+	a3 := a[2:3]
+	fmt.Println(a3)     // [2]
+	fmt.Println(len(a3), cap(a3))   // 1 4
+	a4 := a[2:3:6]
+	fmt.Println(a4)     // [2]
+	fmt.Println(len(a4), cap(a4))   // 1 4
+	/*	a3 与 a4 效果一致，所以 {low:high:max}  格式，如果不指定  max ，则 max 默认为原数组的最大长度值
+		a2 除了指定值的范围，还指定了其 容量max 的位置，所以 最终容量值为  max-low
+		长度len = high - low
+		容量cap = max - low
 	*/
 }
