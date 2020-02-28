@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // 学习第四章-复合数据类型--4.2-slice
 /*
@@ -15,7 +17,9 @@ import "fmt"
 func main() {
 	fmt.Println("learn4.2")
 
-	sliceFunc()
+	// sliceFunc()
+	// sliceReverseFunc()
+	sliceCompareFunc()
 }
 
 /*
@@ -64,6 +68,99 @@ func sliceFunc(){
 	// 取 endlessSummer 里面下标为0的元素的值，也就是 "June",
 	//	然后截取这个字符串：(下标为1 开始到最后的 字符) 得到 "une"
 }
+
+/*
+	另外，注意求字符串(string) 子串操作和对字节 slice([]byte) 做 slice 操作这两者的相似性。
+	它们都写作 x[m:n]， 并且都返回原始字节的一个字序列，同时它们的底层引用方式也是相同的，
+	所以两个操作都消耗常量时间。区别在于： 如果 x 是字符串，那么x[m:n] 返回的是一个字符串；
+	如果 x 是字节 slice, 那么返回的结果是 字节 slice 。
+
+	因为 slice 包含了指向数组元素的指针，所以将 一个 slice 传递给函数的时候，可以在函数内部修改底层数组的元素。
+	换言之，创建一个数组的 slice 等于为数组创建了一个别名（见 2.3.2节）。下面的函数 reverse 就地反转了整型 slice
+	中的元素，它适用于任意长度的整型 slice.
+ */
+func sliceReverseFunc(){
+	a := [...]int{0,1,2,3,4,5}
+	reverse(a[:])
+	/*
+		注意 数组作为参数传入时的写法，a[:],  直接传入 a, 会导致类型不匹配，
+		具体说明请参考 learn4.1 里arrayFunc7() 里面的示例。
+	 */
+	fmt.Println(a)    // "[5,4,3,2,1,0]"
+
+	s := []int{0,1,2,3,4,5}
+	// 向左移动两个元素
+	reverse(s[:2])
+	fmt.Println(s)     // "[1 0 2 3 4 5]"
+	reverse(s[2:])
+	fmt.Println(s)     // "[1 0 5 4 3 2]"
+	reverse(s)
+	fmt.Println(s)     // "[2 3 4 5 0 1]"
+}
+
+func reverse(s []int){   // 引用修改，会直接修改到数组原数据，详细说明 请参考 learn4.1 里arrayFunc7() 里面的示例。
+	for i,j := 0, len(s)-1; i<j; i,j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+}
+
+/*  强调重点： slice 与 数组的 区别。
+	Go 语言中的切片 (slice)
+		type slice struct {
+			 array unsafe.Pointer
+			 len int
+			 cap int
+			}
+		slice是一个特殊的引用类型,但是它自身也是个结构体
+       属性len表示可用元素数量,读写操作不能超过这个限制,不然就会panic
+       属性cap表示最大扩张容量,当然这个扩张容量也不是无限的扩张,它是受到了底层数组array的长度限制,超出了底层array的长度就会panic
+
+	注意初始化 slice s 的表达式和初始化数组 a 的表达式的区别。 slice 字面量看上去和数组字面量很像，
+	都是用逗号分隔并用花括号括起来的一个元素序列，但是 slice 没有指定长度。（看下面的例子）
+				a := [...]int{0,1,2,3,4,5}
+				b := [6]int{0,1,2,3,4,5}
+				c := a[2:5]
+				d := b[2:5]
+			a,b 是数组，有固定的长度，类型是：[n]int{} ；
+			c,d 是 slice 没有指定长度 ,类型是： []int{}；
+			a 与 b 可以用 == 进行比较，
+			c 与 d 不行， a 与 c 也不行，
+			== 运算只能用在 固定长度的数组之间进行比较。
+
+	这种隐式区别的结果分别是： 创建有固定长度的数组和 创建指向数组的 slice。 和数组一样， slice 也按照顺序指定元素，
+	也可以通过索引来指定元素，或者 两者结合。
+
+ */
+func sliceCompareFunc(){
+	a := [...]int{0,1,2,3,4,5}
+	b := [6]int{0,1,2,3,4,5}
+	// c := []int{0,1,2,3,4,5}
+	fmt.Println(a == b)     // true,  [...]int{} 与 [6]int{} 可以互相转换，比较。(数组比较，比较的是里面的元素值)
+	// fmt.Println(a == c)  // 编译错误， [...]int{} 与 []int{} 是不同类型，所以不能比较
+	// fmt.Println(b == c)  // 编译错误， [6]int{} 与 []int{} 是不同类型，所以不能比较
+
+	a1 := a[2:5]
+	b1 := b[2:5]
+	fmt.Println(a1)
+	fmt.Println(b1)
+
+	 // fmt.Println(a == a1)   // 编译错误: Invalid operation: a == a1 (mismatched types [6]int and []int)
+	// fmt.Println(a1 == b1)   // 编译错误: Invalid operation: a1 == b1 (operator == not defined on []int)
+
+	/*
+		和数组不同的是， slice 无法做比较，因此不能用 == 来测试两个 slice 是否拥有相同的元素。
+		标准库里面提供了高度优化的函数 bytes.Equal 来比较两个字节 slice([]byte) 。
+		但是对于其他类型的 slice ，我们必须自己来写函数比较。
+	 */
+}
+
+func equal(x,y []string) bool {
+
+	return false
+}
+
+
+
 
 
 
