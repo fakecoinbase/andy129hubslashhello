@@ -21,7 +21,8 @@ func main() {
 	// sliceReverseFunc()
 	// sliceCompareFunc()
 	// shallowCopyAndDeepCopy()
-	sliceCompareFunc2()
+	// sliceCompareFunc2()
+	makeSliceFunc()
 }
 
 /*
@@ -343,6 +344,54 @@ func shallowCopyAndDeepCopy(){
 	fmt.Printf("%p %p\n", &x,&y)
 	y[2] = 10
 	fmt.Println(x,y)
+}
+
+/*
+	内置函数 make 可以创建一个具有指定元素类型、长度和容量的 slice。其中容量参数可以省略，
+	在这种情况下， slice 的长度和容量相等。
+
+	make([]T,len)
+	make([]T,len,cap)  // make([]T, cap)[:len]  功能相同
+
+ */
+// make 函数创建 slice
+func makeSliceFunc(){
+
+	a := make([]string, 5)
+	fmt.Println(a)                          // "[    ]"
+	fmt.Println("a"+a[2]+"b")          // "ab"
+	fmt.Println(a == nil, len(a), cap(a))   // "false 5 5"
+
+	b := make([]string,5)
+	fmt.Println(b)                          // "[    ]"
+	fmt.Println("a"+b[2]+"b")          // "ab"
+	// fmt.Println(a == b)
+	//编译报错： Invalid operation: a == b (operator == not defined on []string)
+	//	依旧遵循 slice 之间不能用运算符号的 规则
+
+	c := make([]string, 4, 6)      // (type, len, cap)
+	fmt.Println(c)                          // "[   ]"
+	fmt.Println(c == nil, len(c), cap(c))   // "false 4 6"
+
+	d := make([]string, 6)[:4]     // (type, cap)[:len]
+	fmt.Println(d)                          // "[   ]"
+	fmt.Println(d == nil, len(d), cap(d))   // "false 4 6"
+
+	e := make([]string, 4)         // (type, len)  ,   未指定cap ,则 cap 与 len 相等
+	fmt.Println(e)                          // "[   ]"
+	fmt.Println(e == nil, len(e), cap(e))   // "false 4 4"
+
+	fmt.Println(equal2(c,e))       // "true"
+	fmt.Println(equal2(c,d))       // "true"
+
+	/*
+		make([]T,len)
+		make([]T,len,cap)  // make([]T, cap)[:len]  功能相同
+
+		深入研究下，其实 make 创建了一个无名数组并返回它的一个 slice; 这个数组仅可以通过这个 slice 来访问。
+		在上面的第一行代码中，所返回的 slice 引用了整个数组。在第二行代码中， slice 只引用了数组的 前 len 个元素，
+		但是它的容量是数组的长度，这为未来的 slice 元素留出空间。
+	 */
 }
 
 
