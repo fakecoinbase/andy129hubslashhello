@@ -152,14 +152,96 @@ func sliceCompareFunc(){
 		标准库里面提供了高度优化的函数 bytes.Equal 来比较两个字节 slice([]byte) 。
 		但是对于其他类型的 slice ，我们必须自己来写函数比较。
 	 */
+
+	m := [...]string{"apple","banana","orange","grape"}
+	n := [4]string{"banana","orange","apple"}
+	fmt.Println(m == n)    // "false",  数组可以用 == 进行比较，但前提是 数组的长度已经指定。 [...]string,  [n]string 之间才能比较
+
+	m1 := m[1:3]
+	n1 := n[:2]
+	// fmt.Println(m1 == n1)    // 编译报错： Invalid operation: m1 == n1 (operator == not defined on []string)
+	fmt.Println(equal(m1,n1))   // "true" ,  自定义 equal() 函数 来比较 两个 slice
+
+	// 那么上面的 equal(m1,n1) 函数还有没有改善的地方呢？
+	// 我们做一个例子，比较极端的例子，数组里面都是空的。
+	x := []string{}
+	y := []string{}
+	y = nil
+	z := []string{""}
+	fmt.Println(len(x), len(y), len(z))   // "0 0 1"
+	fmt.Println(x,y,z)   // "[] [] []"
+
+	fmt.Println(equal(x,y))    // true,  // equal() 函数功能不健全，有漏洞，要舍弃。
+	fmt.Println(equal2(x,y))   // false, x 与 y 虽然数组长度相同都是0 ，但是 []string{}, []string(nil) 是不同的性质。
+
+	// 小插曲：
+	//j := []string{nil}     // 虽然编译没有报错，但是运行就会报错: cannot use nil as type string in array or slice literal
+
+	// 字符串数组，还有另外比较偏门的写法，  new, 详见 2.3.3 new 函数
+	k := new([]string)
+	fmt.Println(*k, len(*k))   //  "[] 0"
 }
 
+/*	扩展学习： https://studygolang.com/articles/9699  （多种方法实现两个字符串string slices的比较）
+			https://blog.csdn.net/luopotaotao/article/details/79410581   （两个任意类型的 slice进行比较）
+ */
+
+// equal() 函数功能不健全，有漏洞，要舍弃。详见参考文档： https://studygolang.com/articles/9699
 func equal(x,y []string) bool {
-
-	return false
+	if len(x) != len(y) {
+		return false
+	}
+	for i:= range x {
+		if x[i] != y[i] {
+			return false
+		}
+	}
+	return true
 }
 
+func equal2(x,y []string) bool {
+	if len(x) != len(y) {
+		return false
+	}
+	// 与 equal() 不同的是，加入了下面这几行代码, 避免出现 []string{}, []string(nil) 相等的情况出现
+	if (x == nil) != (y == nil) {
+		return false
+	}
+	for i:= range x {
+		if x[i] != y[i] {
+			return false
+		}
+	}
+	return true
+}
 
+/*  这种方法暂时保留，待学习 go test 之后再回过头来 验证效率。
+	BCE优化 ： https://studygolang.com/articles/9699
+	Golang提供BCE特性，即Bounds-checking elimination，关于Golang中的BCE，
+	推荐一篇大牛博客Bounds Check Elimination (BCE) In Golang 1.7
+	https://go101.org/article/bounds-check-elimination.html
+ */
+func equal3(x,y []string) bool {
+	if len(x) != len(y) {
+		return false
+	}
+
+	if (x == nil) != (y == nil) {
+		return false
+	}
+	/*
+		equal2() 的基础上，加入了下面这行代码, 上述代码通过y = y[:len(x)]处的bounds check
+		能够明确保证 y[i]不会出现越界错误，从而避免了y[i]中的越界检查从而提高效率.
+	 */
+	y = y[:len(x)]
+
+	for i:= range x {
+		if x[i] != y[i] {
+			return false
+		}
+	}
+	return true
+}
 
 
 
