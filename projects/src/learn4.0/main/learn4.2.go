@@ -20,7 +20,8 @@ func main() {
 	// sliceFunc()
 	// sliceReverseFunc()
 	// sliceCompareFunc()
-	shallowCopyAndDeepCopy()
+	// shallowCopyAndDeepCopy()
+	sliceCompareFunc2()
 }
 
 /*
@@ -257,6 +258,54 @@ func equal3(x,y []string) bool {
 	会带来困扰。所以最安全的方法就是不允许直接比较 slice。
 
  */
+
+// slice 与 运算符号， slice 的 nil 的表现形式
+func sliceCompareFunc2(){
+	m := [...]string{"apple","banana","orange","grape"}
+	n := [4]string{"banana","orange","apple"}
+	fmt.Println(m == n)
+
+	m1 := m[1:3]
+	n1 := n[:2]
+	// fmt.Println(m1 == n1)    // 编译报错： Invalid operation: m1 == n1 (operator == not defined on []string)
+	//  前面说到 slice 之间不能用 == 运算符，但是 slice 唯一允许的比较操作室和 nil 做比较，例如：
+
+	if m1 != nil {
+		if n1 == nil {
+
+		}
+	}
+
+	/*
+		slice 类型的零值是 nil . 值为 nil 的 slice 没有对应的底层数组。值为 nil 的 slice 长度和容量都是 零，
+		但是也有非 nil 的 slice 长度和容量是 零，例如 []int{} 或 make([]int,3)[3:]。
+		对于任何类型，如果它们的值可以是 nil,那么这个类型的 nil 值可以使用一种转换表达式，例如 []int(nil)
+	 */
+	a := []int{}              // 长度，容量，都是 0
+	b := make([]int,3)[3:]    // slice b 是在 底层数组[]int{}基础上 切片出来的。
+	fmt.Println(len(b), cap(b))   // "0 0"
+	fmt.Println(a,b)              // "[] []"
+
+	var s []int              // len(s) == 0, s == nil
+	s = nil                  // len(s) == 0, s == nil
+	s = []int(nil)           // len(s) == 0, s == nil
+	s = []int{}              // len(s) == 0, s != nil
+	fmt.Println(s)           // []
+
+	var str []string         // len(str) == 0, str == nil
+	str = nil                // len(str) == 0, str == nil
+	str = []string(nil)      // len(str) == 0, str == nil
+	str = []string{}         // len(str) == 0, str != nil
+	str = []string{""}       // len(str) == 1, str != nil
+	fmt.Println(str)         // []
+
+	/*
+		所以，如果想检查一个 slice 是否是空，那么使用 len(s) == 0，而不是 s == nil,
+		因为 s != nil 的情况下， slice 也有可能是空。除了可以和 nil 做比较之外，
+		值为 nil 的 slice 表现和其他长度为 零的 slice 一样。例如， reverse 函数调用 reverse(nil) 也是安全的。
+		除非文档上面写明了与此相反， 否则无论值是否为 nil, Go 的函数都应该以相同的方式对待所有长度为 零的 slice.
+	 */
+}
 
 /*  浅拷贝与深拷贝： https://www.jianshu.com/p/35d69cf24f1f
     数据分为基本数据类型(String, Number, Boolean, Null, Undefined，Symbol)和对象数据类型。
