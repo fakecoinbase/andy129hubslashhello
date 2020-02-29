@@ -19,7 +19,8 @@ func main() {
 
 	// sliceFunc()
 	// sliceReverseFunc()
-	sliceCompareFunc()
+	// sliceCompareFunc()
+	shallowCopyAndDeepCopy()
 }
 
 /*
@@ -242,7 +243,58 @@ func equal3(x,y []string) bool {
 	}
 	return true
 }
+/*
+	这种深度比较看上去很简单，并且运行的时候并不比字符串数组使用 == 做比较多耗费时间。
+	你或许奇怪为什么 slice 比较不可以直接使用 == 操作符比较。这里有两个原因。
+	首先，和数组元素不同，slice 的元素是非直接的，有可能 slice 可以包含它自身。
+	虽然有办法处理这种特殊的情况，但是没有一种方法是简单、高效、直观的。
 
+	其次，因为slice 的元素不是直接的，所以如果底层数组元素改变，同一个 slice 在不同的时间会拥有不同的元素。
+	由于 散列表 (例如 Go的 map 类型)仅对元素的键做浅拷贝，这就要求散列表里面键在散列表的整个生命周期内
+	必须保持不变。因为 slice 需要深度比较，所以就不能用 slice 作为 map 的键。对于引用类型，例如指针和通道，
+	操作符 == 检查的是引用相等性，即它们是否指向相同的元素。如果有一个相似的 slice 相等性比较功能，它或许
+	会比较有用，也能解决 slice 作为 map 键的问题，但是如果操作符 == 对 slice 和 数组的行为不一致，
+	会带来困扰。所以最安全的方法就是不允许直接比较 slice。
+
+ */
+
+/*  浅拷贝与深拷贝： https://www.jianshu.com/p/35d69cf24f1f
+    数据分为基本数据类型(String, Number, Boolean, Null, Undefined，Symbol)和对象数据类型。
+
+	1、基本数据类型的特点：直接存储在栈(stack)中的数据
+
+	2、引用数据类型的特点：存储的是该对象在栈中引用，真实的数据存放在堆内存里
+
+	引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。当解释器寻找引用值时，
+	会首先检索其在栈中的地址，取得地址后从堆中获得实体。
+ */
+func shallowCopyAndDeepCopy(){
+
+	// 基本数据类型，直接存储在 栈 中的数据
+	a := "abcdefg"
+	var b string = a
+	b = "xxxx"
+	fmt.Println(b,a)
+	c := a
+	c = "yyyy"
+	fmt.Println(a,b,c)
+
+	d := &a    // 将 a 的地址赋值给 d, 修改 d 则就会 改动到 a
+	fmt.Println(*d)
+	*d = "afgsdfsdf"
+	fmt.Println(a)
+
+
+	x := []int{1,2,3,4,5}
+	y := x
+	/*  赋值操作：
+		当我们把一个对象赋值给一个新的变量时，赋的其实是该对象的在栈中的地址，而不是堆中的数据。
+		也就是两个对象指向的是同一个存储空间，无论哪个对象发生改变，其实都是改变的存储空间的内容，因此，两个对象是联动的。
+	 */
+	fmt.Printf("%p %p\n", &x,&y)
+	y[2] = 10
+	fmt.Println(x,y)
+}
 
 
 
