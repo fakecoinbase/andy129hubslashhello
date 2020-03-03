@@ -126,7 +126,7 @@ func reverseByPtrTest(){
 	reverseByPtr(&a)
 	fmt.Println(a)    // "[5 4 3 2 1 0]"
 }
-
+// 练习4.3： 重写函数 reverse, 使用数组指针作为参数而不是 slice .
 func reverseByPtr(ptr *[]int){
 
 	for i,j := 0,len(*ptr)-1; i < j; i,j = i+1, j-1 {
@@ -141,7 +141,7 @@ func rotateTest(){
 	r[2] = 124
 	fmt.Println(a)   // r 扩容，底层数组不再是 a,所以 修改 r 中的值 不会影响到 a
 }
-
+// 练习4.4：编写一个函数 rotate, 实现一次遍历就可以完成元素旋转。
 func rotate(s []int, position int) []int {
 	r := s[position:]  // [3,4,5,6,7]
 	fmt.Println(len(r),cap(r))
