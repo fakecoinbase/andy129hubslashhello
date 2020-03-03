@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"unicode"
+)
 
 // 学习第四章-复合数据类型--4.2.2-slice 就地修改
 func main() {
@@ -11,7 +14,8 @@ func main() {
 	// sliceRemoveTest()
 	// reverseByPtrTest()
 	// rotateTest()
-	removeNeiTest()
+	// removeNeiTest()
+	changeBlankTest()
 }
 
 /*
@@ -217,4 +221,41 @@ func removeMultiple(a *[]string) {     // "aaa","b","cc","cc","cc","b"
 		}
 	}
 	*a = A
+}
+
+func changeBlankTest(){
+	// a := "a刘德华f    s章f  sd f a   s！d    a"
+	a := "asdf    sadf  sd f a   sfd    a"
+	runes := []rune(a)
+	changeBlankByASCII(runes)    // 自定义函数，有待完善，关键是 还未理解练习题目的意思。
+
+	removeEmpty(&a)   // 结果有待完善，既然说明了是 UTF-8 编码的字节，如果 a 里面有中文，则输出有问题。
+	fmt.Println(a)
+
+	fmt.Println("a\u0020b")  // a b         // 半角空格(英文符号)\u0020,代码中常用的;       ASCII
+	fmt.Println("a\u3000b")  // a　b        // 全角空格(中文符号)\u3000,中文文章中使用      Unicode
+}
+
+// 练习4.6： 编写一个就地处理函数，用于将一个 UTF-8 编码的字节 slice 中
+//	所有相邻的 Unicode 空白字符 (查看 unicode.IsSpace) 缩减为一个 ASCII 空白字符。
+func changeBlankByASCII(runes []rune){
+
+}
+// 练习4.6:  网上参考方法 （有待确认?）
+func removeEmpty(a *string) {
+	S := *a
+	str := string(S[0])
+	end := 0
+	for _, s := range S {
+		last := rune(str[end])
+		//fmt.Printf("s:  %q  %t\n",s, unicode.IsSpace(s))
+		//fmt.Printf("---l:  %q  %t\n",last, unicode.IsSpace(last))
+		if unicode.IsSpace(last) && unicode.IsSpace(s) {
+			continue
+		}
+		str += string(s)
+		//fmt.Println("str : ",str)
+		end++
+	}
+	*a = str[1:]
 }
