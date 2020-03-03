@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"unicode"
+	"unicode/utf8"
 )
 
 // 学习第四章-复合数据类型--4.2.2-slice 就地修改
@@ -15,7 +16,8 @@ func main() {
 	// reverseByPtrTest()
 	// rotateTest()
 	// removeNeiTest()
-	changeBlankTest()
+	// changeBlankTest()
+	reverseUTF8Test()
 }
 
 /*
@@ -258,4 +260,72 @@ func removeEmpty(a *string) {
 		end++
 	}
 	*a = str[1:]
+}
+
+// 练习4.7: 修改函数 reverse, 来翻转一个 UTF-8 编码的字符串中的字符元素，传入参数是 该字符串对应的字节 slice 类型([]byte)。
+// 你可以做到不需要重新分配内存就实现该功能吗？
+func reverseUTF8Test(){
+	str := "fdsf我是fdfd 刘德华df f"
+	b := []byte(str)
+	reverseUTF8(&b)           // 进行指针操作
+	fmt.Println(string(b))    // "f fd华德刘 dfdf是我fsdf"
+
+	b[0] = 'a'
+	fmt.Println(string(b))    // "a fd华德刘 dfdf是我fsdf"
+
+	fmt.Println("-------------------网上参考方法测试之 不使用指针操作--------------------")
+	str3 :=  "fsdf中华人民fsdfd共和国f"
+	b3 := []byte(str3)
+	reverse_byteNoPtr(b3)
+	fmt.Println(string(b3))   // "f国和共dfdsf民人华中fdsf"
+
+	b3[0] = 'a'
+	fmt.Println(string(b3))   // "a国和共dfdsf民人华中fdsf"
+
+	/*
+		//  utf8.DecodeRuneInString(string(slice[0:]))  每次循环取 slice里面第一个元素
+
+		//  slice 首个元素为"中" "中华人民共和国" "华人民共和国"  "华人民共和国国"   替换："华人民共和国中"
+		//  slice 首个元素为"华" "华人民共和国"   "人民共和国"   "人民共和国国中"   替换："人民共和国华中"
+		//  slice 首个元素为"人" "人民共和国"   "民共和国"   "民共和国国华中"       替换："民共和国人华中"
+		//  slice 首个元素为"民" "民共和国"   "共和国"   "共和国国人华中"           替换："共和国民人华中"
+		//  slice 首个元素为"共" "共和国"   "和国"   "和国国民人华中"               替换："和国共民人华中"
+		//  slice 首个元素为"和" "和国"   "国"   "国国共民人华中"                   替换："国和共民人华中"
+	 */
+}
+
+// 练习4.7：个人实现方法
+// 对比 reverse_byteNoPtr()，我这里使用了 rune 迭代，核心代码过程简单，但却比 它多了一个指针操作，后续再研究优化。
+func reverseUTF8(b *[]byte){
+	str := string(*b)
+	runes := []rune(str)
+	len := len(runes)
+
+	for i,_ := range runes {
+		// fmt.Printf("%q\n", v)
+		if (i < len/2) {
+			runes[i],runes[len-i-1] = runes[len-i-1],runes[i]
+		}
+	}
+	*b = []byte(string(runes))    // 将最后的结果赋予 指针变量，从而更新传入的 b *[]byte
+	//fmt.Println(string(runes))
+}
+
+// 对比以上的方法，这种方法就算是没有使用指针，依然能达到就地修改 slice 的目的，原因是？
+// 原因是  utf8.DecodeRuneInString(string(slice[0:]))  从这里开始一直使用的是 slice[:]
+// 修改 slice 片段能够达到更新 底层数组的目的，所以针对 slice 的修改会更新到 []byte 里。
+
+// 练习4.7： 网上参考方案  (是以单个 UTF-8的字节数为间隔，依次循环迭代由高位索引的元素向前移动，后面再补充首个被覆盖的元素)
+func reverse_byteNoPtr(slice []byte) {
+
+	//fmt.Println(string(*slice))
+
+	for l := len(slice); l > 0; {
+		r, size := utf8.DecodeRuneInString(string(slice[0:]))   // 每次都输出 slice 里面第一个元素
+		//fmt.Println(string(r))
+		copy(slice[0:l], slice[0+size:l])
+		copy(slice[l-size:l], []byte(string(r)))
+		l -= size
+	}
+	// fmt.Println(string((slice)))
 }
