@@ -10,7 +10,8 @@ func main() {
 	// sliceImplStackTest()
 	// sliceRemoveTest()
 	// reverseByPtrTest()
-	rotateTest()
+	// rotateTest()
+	removeNeiTest()
 }
 
 /*
@@ -154,4 +155,66 @@ func rotate(s []int, position int) []int {
 		// [3,4,5,6,7,2,1,0]
 	}
 	return r
+}
+func removeNeiTest(){
+	a := []string{"aaa","b","cc","cc","cc","b"}
+	a = removeNei(a)
+
+	fmt.Println(a)   // "[aaa b cc b]"
+
+	b := []string{"aaa","aaa"}
+	b = removeNei(b)
+
+	fmt.Println(b)
+
+	fmt.Println("-------------------网上参考方法测试（已修复代码）--------------------")
+	c := []string{"aaa","b","cc","cc","cc","b"}
+	removeMultiple(&c)
+	fmt.Println(c)    // "[aaa b cc b]"， 代码修复后，输出正常
+	fmt.Println("-------------------网上参考方法测试（已修复代码）--------------------")
+
+	d := []string{"s", "a", "a", "s", "d", "z", "a", "z", "v", "w", "w","w","a", "a"}
+	// fmt.Println(removeNei(d))   // "[s a s d z a z v w a]"
+	removeMultiple(&d)
+	fmt.Println(d)                 // "[s a s d z a z v w a]"
+}
+
+// 练习4.5: 编写一个就地处理函数，用于去除 []string slice 中相邻的重复字符串元素.
+func removeNei(strings []string) []string{
+
+	str := strings[:]
+	for i,j:=0,1;j<len(str);i,j=i+1,j+1 {
+		if str[i] == str[j] {
+			copy(str[i:], str[j:])    // 参考 remove()函数中，高位索引的元素向前移动来覆盖被移除元素所在位置的 原理
+			return removeNei(str[:len(str)-1])
+			// 当发现有相邻元素一致的情况时：采取了以下策略：
+			/*
+				1, 参考remove()函数，str[:len(str)-1] 移除slice 里面最后一个多余元素
+				2，采用回调函数，将更新的 str 继续执行遍历，继续判断里面是否存在 相邻元素重复的情况。
+			 */
+		}
+	}
+	return str
+}
+// 练习4.5:  网上参考方法
+func removeMultiple(a *[]string) {     // "aaa","b","cc","cc","cc","b"
+	A := *a
+	l := len(A)                    // l == 6
+	for i := 0; i < l-1; i++ {    // i == 2时，
+		prev := A[i]
+		next := A[i+1]
+		if prev == next {
+			/*
+				i == 2时，开始有相同元素出现，然后删除一个相同元素，
+				进行 append()函数，追加完之后再复制给 A, A 此时的元素少了一个，所以 长度 l--，然后进行下一轮循环
+			问题就出现在下一个循环里：
+				当 i == 3时，由于 A 里的元素已更新 "[aaa b cc cc b]]", 所以此时 A[3] 与 A[4]对比，对比的是 "cc" 和 "b",
+				所以就漏掉了 A[2]与 A[3] ， "cc" 与 "cc" 之间的比较。
+			*/
+			A = append(A[:i], A[i+1:]...)   //  append(["aaa","b"], ["cc","cc","b"])
+			l--                             // l-- == 6-1 == 5
+			i--                             // &&&&& 漏洞修复 &&&&&
+		}
+	}
+	*a = A
 }
