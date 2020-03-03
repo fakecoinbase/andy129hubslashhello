@@ -8,7 +8,9 @@ func main() {
 
 	// nonemptyTest()
 	// sliceImplStackTest()
-	sliceRemoveTest()
+	// sliceRemoveTest()
+	// reverseByPtrTest()
+	rotateTest()
 }
 
 /*
@@ -117,4 +119,39 @@ func remove(slice []int , i int) []int {
 func remove2(slice []int, i int) []int{
 	slice[i] = slice[len(slice)-1]
 	return slice[:len(slice)-1]
+}
+
+func reverseByPtrTest(){
+	a := []int{0,1,2,3,4,5}
+	reverseByPtr(&a)
+	fmt.Println(a)    // "[5 4 3 2 1 0]"
+}
+
+func reverseByPtr(ptr *[]int){
+
+	for i,j := 0,len(*ptr)-1; i < j; i,j = i+1, j-1 {
+		(*ptr)[i], (*ptr)[j] = (*ptr)[j],(*ptr)[i]
+	}
+}
+
+func rotateTest(){
+	a := []int{0, 1, 2, 3, 4, 5, 6, 7}
+	r := rotate(a, 3)
+	fmt.Println(r)  //  "[3 4 5 6 7 2 1 0]"
+	r[2] = 124
+	fmt.Println(a)   // r 扩容，底层数组不再是 a,所以 修改 r 中的值 不会影响到 a
+}
+
+func rotate(s []int, position int) []int {
+	r := s[position:]  // [3,4,5,6,7]
+	fmt.Println(len(r),cap(r))
+	for i := position - 1; i >= 0; i-- {
+		r = append(r, s[i])         // 进行了扩容，导致 r 的底层数组不再是 s , 而是另外开辟了一个空间。
+		fmt.Println(len(r),cap(r))
+		// [3,4,5,6,7] append [2]
+		// [3,4,5,6,7,2] append [1]
+		// [3,4,5,6,7,2,1] append [0]
+		// [3,4,5,6,7,2,1,0]
+	}
+	return r
 }
