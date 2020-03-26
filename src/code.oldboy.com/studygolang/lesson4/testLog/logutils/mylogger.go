@@ -1,5 +1,13 @@
 package logutils
 
+/*  日志包使用说明：
+1, LogFileMaxSize  暂定为 5KB，便于测试。使用时注意根据项目不同修改一个 合适的值。
+2，使用 logutils.NewFileLogger("Error", "./log/", "test.log")  创建一个日志结构体时，注意里面的路径，必须先在本地创建成功(例如：./log/)
+3, 后续优化：
+	a, 增加 日志文件按照时间拆分 (每隔一小时拆分一次)的功能
+	b, 增加配置文件 (里面配置log 存放路径，文件名，最大容量，模式(终端，还是写文件)， 按照大小还是时间拆分文件 等)
+*/
+
 import (
 	"strings"
 )
@@ -16,7 +24,7 @@ const (
 	FatalLevel
 )
 
-// 定义日志最大存储量  (暂定为 5KB， 便于测试)
+// LogFileMaxSize 定义日志最大存储量  (暂定为 5KB， 便于测试)
 const (
 	KB             = 1024
 	LogFileMaxSize = 5 * KB
