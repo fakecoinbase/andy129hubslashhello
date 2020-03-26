@@ -10,10 +10,13 @@ import (
 )
 
 // Config 是一个 日志文件的配置文件
-// 注意1： 解析config 文件得到的数据 会赋值给这个结构体里的字段，所以首字母要大写
+// 注意1： 解析config 文件得到的数据 会赋值给这个结构体里的字段，所以首字母要大写 （强烈注意）
 // 注意2：通过反射设置字段时，如果在进行 string.ParseInt() 转换时，可能会出现类型转换异常，
 // 例如： max_size= ,  或者 max_size=20兆,  通过反射查找字段时 是根据 结构体中定义的顺序来找的
 // 一旦 MaxSize 这个字段在设置值的时候出现异常，如果不做其他处理，则程序中断，其后面的其他字段 的值也无法设置成功。
+// 注意3： 解析 config 文件时，我们使用 ioutils.ReadFile() ，然后得到[]byte 转换为 string , 然后进行拆分, strings.Split(configStr, "\r\n")
+// "\r\n" 是 window 平台下的换行符， 如果项目上线了，部署在 unix 系统上，那么 这里就需要更改了，可能会是 ("\n")
+
 type Config struct {
 	FilePath string `conf:"file_path"`
 	FileName string `conf:"file_name"`
