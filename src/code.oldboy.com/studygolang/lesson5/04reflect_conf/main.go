@@ -16,7 +16,6 @@ import (
 // 一旦 MaxSize 这个字段在设置值的时候出现异常，如果不做其他处理，则程序中断，其后面的其他字段 的值也无法设置成功。
 // 注意3： 解析 config 文件时，我们使用 ioutils.ReadFile() ，然后得到[]byte 转换为 string , 然后进行拆分, strings.Split(configStr, "\r\n")
 // "\r\n" 是 window 平台下的换行符， 如果项目上线了，部署在 unix 系统上，那么 这里就需要更改了，可能会是 ("\n")
-
 type Config struct {
 	FilePath string `conf:"file_path"`
 	FileName string `conf:"file_name"`
