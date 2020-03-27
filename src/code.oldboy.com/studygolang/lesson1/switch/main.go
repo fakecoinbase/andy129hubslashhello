@@ -10,7 +10,35 @@ func main() {
 	//switchDemo2(2) // "偶数"
 
 	//switchDemo3()
-	switchDemo4()
+	// switchDemo4()
+
+	testSwitch()
+}
+
+// switch 的坑 (一个奇怪的问题)
+func testSwitch() {
+	f := func() bool {
+		return false
+	}
+
+	// 情景1： 打印 "假"
+	switch f() {
+	case false:
+		fmt.Println("假")
+	case true:
+		fmt.Println("真")
+	}
+
+	// 情景2： 打印 "真" ?  为什么呢
+	switch f(); {
+	// f(); 写法不会报错，那它代表什么意思呢?    相当于： if _ = f();  相当于把 f()的返回值取出来丢弃了 ,
+	// _ = f(); 此行代码 不再是 switch 的判断条件,  所以 switch 的判断条件就没了，那就是默认 为 true ,  所以就匹配到  case true :
+	case false:
+		fmt.Println("假")
+	case true:
+		fmt.Println("真")
+	}
+
 }
 
 // 多个不同的判断条件时，可以使用 switch
