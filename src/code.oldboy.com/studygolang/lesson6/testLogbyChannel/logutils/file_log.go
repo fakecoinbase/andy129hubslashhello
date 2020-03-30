@@ -117,6 +117,7 @@ func (f *FileLogger) log(level Level, format string, args ...interface{}) {
 		Message:  msg,
 	}
 
+	// 除非写入日志的频率降低，降低到 通道的容量足够  日志MSG 的传入和接收
 	// f.logDataChan <- logData   // 万一 logDataChan 里面装满了容量， 后台来不及写，就会阻塞在这里，所以我们用 select
 
 	// select 防阻塞，第一个 case 不为 true , 那么就执行 default: ，不会阻塞主程序。
