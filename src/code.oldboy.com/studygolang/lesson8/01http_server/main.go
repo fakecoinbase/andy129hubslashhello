@@ -23,6 +23,7 @@ func sayHello(w http.ResponseWriter, t *http.Request) {
 	data, err := ioutil.ReadFile("./form.html")
 	if err != nil {
 		fmt.Println("读取失败, err : ", err)
+		w.WriteHeader(http.StatusInternalServerError) // 返回 网络的错误信息 , 详见 http/status.go  里面的常量
 		return
 	}
 
