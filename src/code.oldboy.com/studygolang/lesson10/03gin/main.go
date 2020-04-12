@@ -23,19 +23,20 @@ go env -w GOPROXY=https://goproxy.cn,https://goproxy.io,direct
 */
 
 // 处理 /index 请求
-func indexHandler(c *gin.Context){
+func indexHandler(c *gin.Context) {
 	// c.JSON(arg1,arg2),  arg1 : 状态码， arg2 : 返回内容(这是一个 map[string]interface{} 类型)
 	c.JSON(http.StatusOK, gin.H{
 		"msg": "这是index 页面",
 	})
 }
 
-// gin
+// gin 框架
+// gin 框架路由的原理， 用的是 httprouter 包，使用的是 前缀树结构实现请求的检索
 func main() {
 	// 启动一个默认的路由
 	router := gin.Default()
 	// 给 /hello 请求配置一个处理函数
-	router.GET("/hello", func(c *gin.Context){
+	router.GET("/hello", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"msg": "Hello 沙河！",
 		})
@@ -44,7 +45,54 @@ func main() {
 	// 给 /index 请求配置一个处理函数
 	router.GET("/index", indexHandler)
 
+	/*  router 处理其他请求的方法
+	router.POST()
+	router.PUT()
+	router.DELETE()
+	*/
+
+	// router 批处理
+	// router.Any("/index", anyHandler) // 可以处理任何http请求
+
+	/*  router.Any() 源码分析： (批量注册了所有的 http 请求), 所以需要在 anyHandler 处理请求的函数中，判断是属于哪一种请求,  c.Request.Method == http.MethodGet
+
+	// Any registers a route that matches all the HTTP methods.
+	// GET, POST, PUT, PATCH, HEAD, OPTIONS, DELETE, CONNECT, TRACE.
+	func (group *RouterGroup) Any(relativePath string, handlers ...HandlerFunc) IRoutes {
+		group.handle(http.MethodGet, relativePath, handlers)
+		group.handle(http.MethodPost, relativePath, handlers)
+		group.handle(http.MethodPut, relativePath, handlers)
+		group.handle(http.MethodPatch, relativePath, handlers)
+		group.handle(http.MethodHead, relativePath, handlers)
+		group.handle(http.MethodOptions, relativePath, handlers)
+		group.handle(http.MethodDelete, relativePath, handlers)
+		group.handle(http.MethodConnect, relativePath, handlers)
+		group.handle(http.MethodTrace, relativePath, handlers)
+		return group.returnObj()
+	}
+
+	*/
+
+	// http.MethodGet 等常量定义
+	/*	http/method.go
+
+			// Common HTTP methods.
+		//
+		// Unless otherwise noted, these are defined in RFC 7231 section 4.3.
+		const (
+			MethodGet     = "GET"
+			MethodHead    = "HEAD"
+			MethodPost    = "POST"
+			MethodPut     = "PUT"
+			MethodPatch   = "PATCH" // RFC 5789
+			MethodDelete  = "DELETE"
+			MethodConnect = "CONNECT"
+			MethodOptions = "OPTIONS"
+			MethodTrace   = "TRACE"
+		)
+	*/
+
 	// 启动 webserver
 	router.Run(":8080")
-	
+
 }
