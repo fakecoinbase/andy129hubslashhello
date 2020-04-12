@@ -1,0 +1,40 @@
+
+{{define "login.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登陆</title>
+</head>
+<body>
+
+    <h1>请输入信息：</h1>
+    <form action="./login" method="POST">
+        <div>
+            <label for="i1">用户名：</label>
+            <input id="i1" name="username" type="text">
+        </div>
+
+        <div>
+            <label for="i2">密码：</label>
+            <input id="i2" name="pwd" type="password">
+        </div>
+        <div>
+            <input type="submit" value="提交">
+            <input type="reset" value="重置">
+        </div>
+    </form>
+
+    <div>
+        {{if eq . "ok"}}
+        <p>允许登陆！</p>
+        {{else}}
+        <p>对不起，你没有权限！</p>
+        {{end}}
+
+    </div>
+    
+</body>
+</html>
+{{end}}
