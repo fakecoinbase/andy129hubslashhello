@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上传多个文件</title>
+</head>
+<body>
+
+    <form action="/uploadmul" method="POST" enctype="multipart/form-data">
+        <label>选择文件</label><br>
+        <input type="file"  name="filename" multiple><br>
+        <input type="file" name="filename"><br>
+        <input type="file" name="filename"><br>
+        <input type="submit">
+    </form>
+
+</body>
+</html>
