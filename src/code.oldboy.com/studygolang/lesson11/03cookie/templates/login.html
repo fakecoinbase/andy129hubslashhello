@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登陆</title>
+</head>
+<body>
+    <p style="color:red; font-size: 12px;">登陆界面!</p> <br>
+
+    <form action="/login" method="POST">
+        <div>
+            <label>用户名：</label>
+            <input type="text" name="username">
+        </div>
+        <div>
+            <label>密码：</label>
+            <input type="password" name="pwd">
+        </div>
+        <div>
+            <input type="submit">
+            <input type="reset">
+        </div>
+        <div>
+            <p style="color:red;">{{.err}}</p>
+        </div>
+    </form>
+</body>
+</html>
