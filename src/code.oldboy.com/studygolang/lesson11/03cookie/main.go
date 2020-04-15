@@ -73,6 +73,11 @@ func homeHandler(c *gin.Context) {
 
 }
 
+// 处理 不经过路由处理的 请求
+func notFoundHandler(c *gin.Context) {
+	c.HTML(http.StatusNotFound, "404.html", nil)
+}
+
 // cookie
 func main() {
 
@@ -86,6 +91,9 @@ func main() {
 
 	// 执行顺序是 先 cookieMiddleWare()  再  homeHandler(),  不会因为 第一个方法返回了， 就不执行第二个
 	router.GET("/home", cookieMiddleWare, homeHandler)
+
+	// 处理 不经过路由处理的 请求
+	router.NoRoute(notFoundHandler)
 
 	router.Run()
 }
