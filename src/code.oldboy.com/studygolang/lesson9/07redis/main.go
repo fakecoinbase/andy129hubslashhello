@@ -27,7 +27,7 @@ func main() {
 
 func set(key string, value string) {
 	// Last argument is expiration. Zero means the key has no
-	// expiration time.
+	// expiration time.  （没有到期时间）
 	/*
 		ret := redisDb.Set(key, value, 0).Val() // .Val() 可以查看操作完成后的结果
 		fmt.Println("ret : ", ret)              // ret : OK
