@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// influxDB 时序数据库
+// influxDB 时序数据库 (开源，但是集群功能是收费的，所以我们使用 kafka集群功能保证数据的有效性及安全，但由于多了一层可能时序性就打了一定的折扣)
 // 参考文章： https://www.liwenzhou.com/posts/Go/go_influxdb/
 
 /* 下载： 参考文章：https://blog.csdn.net/v6543210/article/details/86934941
