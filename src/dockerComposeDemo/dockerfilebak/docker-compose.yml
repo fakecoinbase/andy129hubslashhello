@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+
+  wordpress:
+    image: wordpress
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_PASSWORD: admin
+    networks:
+      - my-bridge
+
+  lb:
+    image: dockercloud/haproxy
+    ports:
+      - 80:80
+    links:
+      - wordpress
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - my-bridge
+
+  mysql:
+    image: mysql:5.5
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: wordpress
+    volumes:
+    - mysql-data:/var/lib/mysql
+    networks:
+      - my-bridge
+
+volumes:
+  mysql-data:
+
+networks:
+  my-bridge:
+    driver: bridge
