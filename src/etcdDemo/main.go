@@ -3,7 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"go.etcd.io/etcd/clientv3"
+	"net"
+	"strings"
 	"time"
 )
 /*  linux 版
@@ -28,11 +31,11 @@ get 值操作
 //etcd 示例
 func main() {
 
-	// testEtcdPutGet()
+	 testEtcdPutGet()
 
 	// testEtcdWatcher()
 
-	testEtcdDel()
+	// testEtcdDel()
 
 }
 
@@ -73,11 +76,17 @@ func testEtcdPutGet(){
 	}
 	defer client.Close()
 
+	ip, err := GetOutboundIP()
+	if err != nil {
+		fmt.Printf("------GetOutboundIP err :%v", err)
+		return
+	}
 	// put
-	key := "collect_log_config"
-	// confStr := `[{"path":"E:/logs/s4.log","topic":"s4_log"}]`
+	key := fmt.Sprintf("collect_log_%s_config", ip)
+	fmt.Println("key : ", key)
+	 confStr := `[{"path":"/tmp/logs/mylog.log","topic":"web_log"}]`
 	// confStr := `[{"path":"E:/logs/s4.log","topic":"s4_log"},{"path":"G:/logs/mylog.log","topic":"web_log"}]`
-	 confStr := `[{"path":"E:/logs/s4.log","topic":"s4_log"},{"path":"G:/logs/mylog.log","topic":"web_log"},{"path":"C:/logs/test.log","topic":"test"} ]`
+	// confStr := `[{"path":"E:/logs/s4.log","topic":"s4_log"},{"path":"G:/logs/mylog.log","topic":"web_log"},{"path":"C:/logs/test.log","topic":"test"} ]`
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	_, err = client.Put(ctx, key, confStr)
 	if err != nil {
@@ -135,5 +144,22 @@ func testEtcdDel(){
 	}
 
 	cancel()
+}
+
+// 通过取巧的方式获取 本地连接外网的IP
+// Get preferred outbound ip of this machine
+func GetOutboundIP() (ip string, err error) {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+	// fmt.Println(localAddr.String()) // 在本机中打印： 192.168.1.2:63095
+
+	ip = strings.Split(localAddr.IP.String(), ":")[0]
+	logrus.Infof("GetOutboundIP(), ip : %s", ip)
+	return
 }
 
