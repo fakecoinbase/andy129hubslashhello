@@ -13,8 +13,41 @@ func main() {
 	// testLeetCode()
 
 	// testLeetCode2()
-	testLeetCode3()
+	// testLeetCode3()
 
+	// testLeetCode4()
+	testLeetCode5()
+
+}
+
+func testLeetCode5() {
+	fmt.Println("6 的阶乘：", jie(20))
+}
+
+func jie(num int) int{
+	if num == 1 {
+		return 1
+	}
+
+	return num*jie(num-1)
+}
+
+
+// 打印 2-100 之间的 素数
+func testLeetCode4(){
+	for num:=2;num<=100;num++ {
+		isPrime := true
+		for j:=2;j<num;j++ {
+			if num % j  == 0 {
+				isPrime = false
+				break
+			}
+		}
+		if isPrime {
+			fmt.Print(" ",num)
+		}
+
+	}
 }
 
 // 如果a+b+c=1000，且a*a+b*b=c*c（a,b,c为自然数），如何求出所有a,b,c可能的组合？不使用数学公式和math包，代码实现，并且尽可能保证算法效率高效

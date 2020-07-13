@@ -3,8 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
+	"os"
+	"path/filepath"
 	"sync"
+	"time"
 )
 
 type People interface {
@@ -157,15 +161,42 @@ func (s Slice) Add(elem int) *Slice {
 	return &s
 }
 
+
+// 0,1,2
+const (
+	a = iota
+	b = iota
+	c = iota
+)
+// 重新计数： 0，1，2
+const (
+	d = iota
+	e
+	f1
+)
+// 只要有 iota , 无论是不是在第一个定义，则都从第一个开始 计数(0)  iota += 0
+// j 未赋值，则与上一个变量的值相等
+// 16,16,2,3
+const (
+	h = 16
+	j
+	m = iota
+	n
+)
+
 // ----------------------------
+
+var wg sync.WaitGroup
 
 // 面试题
 func main() {
+
 	// 考核接口的用法
 	// testInterface()
 
 	// 考核 for range 的用法
 	// testForRange()
+	// testForRange2()
 
 	// testPtr()
 	// testPtr2()
@@ -178,7 +209,9 @@ func main() {
 
 	// testString()
 
-	//testFor()
+	// testFor()
+	// testFor2()
+	// testFor3()
 
 	//testChan()
 
@@ -204,6 +237,8 @@ func main() {
 
 	// testMap2()
 
+	// testMap3()
+
 	// testPrint()
 
 	// testForMap()
@@ -220,7 +255,10 @@ func main() {
 
 	// testSlice2()
 
-	testDefer()     // 考核点： return 之后 defer 的执行顺序
+	// testDefer()     // 考核点： return 之后 defer 的执行顺序
+	// testDefer2()
+	// testDefer3()
+	// testDefer4()
 
 	// testSlice3()     // 考核点：defer 语句的执行顺序
 	// testSlice4()   // 考核点：defer 语句的执行顺序
@@ -232,6 +270,94 @@ func main() {
 	// testChan2()
 
 	// testPanic()
+
+	// testIf()
+
+	// testPrintf()
+
+	// testConst()
+
+	// testFilePath()
+
+	testLog()
+
+}
+// 考核点: log包的使用
+func testLog() {
+	var errorLog = log.New(os.Stdout, "ERROR", log.Lshortfile)
+
+	errorLog.Fatalf("标准日志输出流")    // ERRORmain.go:289: 标准日志输出流
+}
+
+// 考核点： filepath 包的运用,  Base(), Dir(), filepath.Join() 等函数功能的使用
+func testFilePath() {
+	path := "abc/ca"
+	fmt.Println(filepath.Base(path))   // ca
+	fmt.Println(filepath.Dir(path))    // abc
+	fmt.Println("-------------------------------")
+
+	path2 := "abc/ca.crt"
+	fmt.Println(filepath.Base(path2))   // ca.crt
+	fmt.Println(filepath.Dir(path2))    // abc
+	fmt.Println("-------------------------------")
+
+	path3 := "abc"
+	fmt.Println(filepath.Base(path3))   // abc
+	fmt.Println(filepath.Dir(path3))    // .
+	fmt.Println("-------------------------------")
+
+	path4 := "/abc"
+	fmt.Println(filepath.Base(path4))   // abc
+	fmt.Println(filepath.Dir(path4))   // \
+	fmt.Println("-------------------------------")
+
+	fmt.Println(filepath.Join(path4, filepath.Base(path4)))   //  \abc\abc
+
+	fmt.Println(filepath.Join(path3, filepath.Base(path3)))   //  abc\abc
+}
+
+func testPrintf(){
+	fmt.Printf("%+d, %+d\n", 123,-123)   // +123, -123
+
+	var a byte = 'a'    // byte == uint8
+	var b rune = 'b'    // rune == int32 （rune 支持中文以及其他复杂字符）
+
+	fmt.Printf("%T, %c\n", a,a)   // uint8, a
+
+	fmt.Printf("%T, %c\n", b,b)   // int32, b
+
+	// 注意直接打印 字节 与 定义 byte 变量， 类型会不同
+	fmt.Printf("%T, %c\n", 'a','a')   // int32, a
+
+}
+
+func testConst() {
+	fmt.Printf("a : %d,b:%d,c:%d,d:%d,e:%d,f1:%d\n",a,b,c,d,e,f1)   // a : 0,b:1,c:2,d:0,e:1,f1:2
+
+	fmt.Printf("h : %d, j : %d, m : %d, n : %d\n", h,j,m,n)  // h : 16, j : 16, m : 2, n : 3
+}
+
+// 考核点：if 流程判断
+func testIf() {
+
+	var a string = "a"
+	var x int = 90
+	if a += "b"; x > 60 {
+		fmt.Println("及格")   // 及格
+	}
+	if a += "c"; x > 100 {
+		fmt.Println("best")
+	}
+
+	fmt.Println("a : ", a)  // a : abc
+
+	var c string = "a"
+	if c += "b"; x > 60 {
+		fmt.Println("及格")  // 及格
+	}else if c += "c"; x > 100 {
+		fmt.Println("best")
+	}
+	fmt.Println("c : ", c)   //  c : ab
 }
 
 // 考核点： panic 与 defer
@@ -305,6 +431,38 @@ func testMutex(){
 	 */
 
 
+}
+
+func testDefer4(){
+
+	strs := []string{"one","two","three"}
+	for _,s := range strs {
+		go func() {
+			time.Sleep(1*time.Second)
+			fmt.Printf("%s ", s)
+		}()
+	}
+	time.Sleep(3*time.Second)
+
+	// 程序运行结果：
+	// three three three
+}
+
+// 注意对比 testDefer2() 的不同。
+func testDefer3(){
+
+	for i:=0;i<5;i++ {
+		defer func() {
+			fmt.Printf("%d ", i)   // 5 5 5 5 5
+		}()
+	}
+}
+
+func testDefer2(){
+
+	for i:=0;i<5;i++ {
+		defer fmt.Printf("%d ", i)   // 4 3 2 1 0
+	}
 }
 
 // 考核点： defer
@@ -440,6 +598,11 @@ func testSlice(){
 
 	fmt.Println(x)
 	fmt.Println(x2)
+
+fmt.Println("--------------------------------------")
+	m := make([]int,0)
+	m = append(m, 1)
+	fmt.Println("m : ",m)
 }
 
 // 考核点：go 语言中 栈与堆
@@ -626,12 +789,40 @@ func testPrint(){
 	fmt.Print("hello fmt\n")
 }
 
+func testMap4() {
+	var m map[string]string
+
+	// m["a"] 返回一个值
+	v := m["a"]
+
+	fmt.Println(v)
+	// m["a"] 返回两个值
+	v2,ok := m["a"]
+
+	fmt.Println(ok,v2)
+}
+
+// 考核点：map 中的初始化
+func testMap3(){
+	var m map[string]string
+	// 不能对 nil 的 map 进行赋值操作
+	// m["a"] = "yang"   // panic: assignment to entry in nil map
+
+	// 但可以对 nil 的 map 进行读取操作，虽然没有什么意义
+	// v 代表值， ok 代表 m["a"] 是否存在
+	v,ok := m["a"]
+
+	fmt.Printf("isExist %t: v : %v\n",ok,v)  // isExist false: v :
+}
+
+
 // 考核点： map 中结构体寻址赋值操作
 func testMap2(){
 
 	type S struct {
 		name string
 	}
+	// map 中的值若是结构体值类型，则m 无法直接寻址
 	m := map[string]S{"x":S{"one"}}  // 看这里，这里的写法分为两步，第一步：定义 map[string]S ， 第二步：初始化 map  {"x", S{"one"}}
 
 	// m["x"].name = "two"    // 语法错误，map 中寻址操作错误
@@ -644,8 +835,8 @@ func testMap2(){
 	fmt.Println("-----------v : ", v)
 
 
-	// map 中的值若是结构体，则2无法直接寻址
-	// 必须是 指针类型
+
+	// map 中的值若是结构体指针类型，则m2 可以直接寻址修改字段
 	m2 := map[string]*S{"x":&S{"one"}}
 
 	m2["x"].name = "two"    // 操作正确
@@ -677,7 +868,6 @@ func modify(m map[string]string){
 func testInterface7(){
 	var a A = Impl_B{}   // A 接口是 B 接口的子集，所以 A 能接收 B 的实现
 	a.data1(10)
-
 	fmt.Println(a)
 
 	/*
@@ -820,6 +1010,8 @@ func testVar(){
 func testChan(){
 	m := make(chan int, 10)
 
+
+
 	// 直接从通道中取值
 	a := <-m
 	fmt.Println(a)
@@ -828,6 +1020,50 @@ func testChan(){
 	v, ok := <-m
 	if ok {   // 能取到☞6
 		fmt.Println(v)
+	}
+}
+/*
+	break label,  调到 label 的位置，然后 不再执行 for 循环的代码
+	continue label, 调到 label 的位置，继续执行 for 循环的代码
+	break,continue 的 label 必须放置在 for 循环的前面
+	用法参考：https://blog.csdn.net/qq_27682041/article/details/78765779
+
+*/
+// 考核点： break label， continue label, goto label 的用法
+func testFor3() {
+	a:=1
+	Loop:
+	for j:=0;j<3;j++ {
+		for a < 10 {
+			fmt.Println(a)
+			if a == 5 {
+				break Loop
+			}
+			a++
+		}
+	}
+	fmt.Println(a)
+}
+
+
+// 考核点： break 跳出单层循环
+/*
+	j :  4
+	i :  0
+	j :  4
+	i :  1
+	j :  4
+	i :  2
+*/
+func testFor2() {
+	for i:=0;i<3;i++ {
+		for j:=0;j<5;j++ {
+			if j == 4 {
+				fmt.Println("j : ", j)
+				break
+			}
+		}
+		fmt.Println("i : ", i)
 	}
 }
 
@@ -867,15 +1103,16 @@ func testFor(){
 func testString(){
 	str1 := "abc"+"123"
 	fmt.Println(str1)
-	fmt.Printf("%#v\n", str1)
+	fmt.Printf("%T, %#v\n", str1,str1)
 
 	str2 := `abc` + `123`
 	fmt.Println(str2)
-	fmt.Printf("%#v\n", str2)
+	fmt.Printf("%T, %#v\n", str2,str2)
 
 	str3 := fmt.Sprintf("abc%d", 123)
 	fmt.Println(str3)
-	fmt.Printf("%#v\n", str3)
+	fmt.Printf("%T, %#v\n", str3,str3)
+
 }
 
 // 考核点：go 语言中 变量自增自减的操作
@@ -1004,6 +1241,18 @@ func swap(a,b int) {
 	a, b = b, a
 }
 
+// 考核 for range 返回值
+func testForRange2(){
+	x := []string{"a","b","c"}
+	// range 只返回一个值时，代表 index
+	for v := range x {
+		fmt.Print(v)   // 0 1 2
+	}
+	fmt.Println("----------------------------")
+	for _,v := range x {
+		fmt.Print(v)   // 0 1 2
+	}
+}
 
 // 考核 for range 的用法
 func testForRange(){
