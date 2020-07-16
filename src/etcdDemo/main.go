@@ -28,6 +28,16 @@ get 值操作
 
  */
 
+
+/*
+	注意：put 是 clientV3 版本的命令!
+	如果使用 etcdctl.exe 来操作 etcd 的话，记得要设置环境变量:
+	SET ETCDCTL_API=3
+
+	Mac & linux :
+	export ETCDCTL_API=3
+*/
+
 //etcd 示例
 func main() {
 
