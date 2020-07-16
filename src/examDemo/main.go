@@ -279,9 +279,67 @@ func main() {
 
 	// testFilePath()
 
-	testLog()
+	// testLog()
+
+	testTryLock()
 
 }
+
+
+
+// Lock try lock
+type Lock struct {
+	c chan struct{}
+}
+
+// NewLock generate a try lock
+func NewLock() Lock {
+	var l Lock
+	l.c = make(chan struct{}, 1)
+	l.c <- struct{}{}
+	return l
+}
+
+// Lock try lock, return lock result
+func (l Lock) Lock() bool {
+	lockResult := false
+	select {
+	case <-l.c:
+		lockResult = true
+	default:
+	}
+	return lockResult
+}
+
+// Unlock , Unlock the try lock
+func (l Lock) Unlock() {
+	l.c <- struct{}{}
+}
+
+var counter int
+
+
+// 考核点：分布式锁
+func testTryLock() {
+	var l = NewLock()
+	var wg sync.WaitGroup
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			if !l.Lock() {
+				// log error
+				println("lock failed")
+				return
+			}
+			counter++
+			println("current counter", counter)
+			l.Unlock()
+		}()
+	}
+	wg.Wait()
+}
+
 // 考核点: log包的使用
 func testLog() {
 	var errorLog = log.New(os.Stdout, "ERROR", log.Lshortfile)
