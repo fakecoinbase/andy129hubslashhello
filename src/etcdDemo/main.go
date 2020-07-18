@@ -56,7 +56,64 @@ func main() {
 
 	// testEtcdDel()
 
-	 testEtcdLock()
+	// testEtcdLock()
+
+	testEtcdGrant()
+}
+
+// etcd 续期模式
+func testEtcdGrant() {
+	endpoints := []string{"127.0.0.1:2379"}
+
+	cfg := clientv3.Config{
+		Endpoints:            endpoints,
+		DialTimeout:          5 * time.Second,
+	}
+
+	cli, err := clientv3.New(cfg)
+	if err != nil {
+		log.Println("new cli error:", err)
+		return
+	}
+	defer cli.Close()
+
+	resp,err := cli.Grant(context.TODO(), 3)
+	if err != nil {
+		log.Println("cli grant error:", err)
+		return
+	}
+
+	// 设置 k/v
+	_, err = cli.Put(context.TODO(), "key", "value", clientv3.WithLease(resp.ID))
+	if err != nil {
+		log.Println("cli put err : ", err)
+	}
+	// 自动续期
+	 _,err = cli.KeepAlive(context.TODO(), resp.ID)   // keepAlive 也就是每隔几秒会将k,v 重新设置一下，放入到通道中，保持活力，返回的要给通道，每隔5秒，我们可以取到值
+
+	time.Sleep(time.Second*4)  // 如果去掉 _,err = cli.KeepAlive(context.TODO(), resp.ID)  代码，由于 Grant() 续期是3秒，所以 休眠4秒后，会获取不到 k/v
+
+	// 除了可以通过通道取值 (每隔N秒钟才能从通道里取到值，不够方便)，我们还可以直接使用 get(key) 的方式取值，由于keepAlive, 所以k/v 不会过期，可以正常取到值
+	gr, err := cli.Get(context.TODO(),"key")
+
+	if err != nil {
+		fmt.Printf("get from etcd failed, err : %v", err)
+	}
+
+	for _, ev := range gr.Kvs {
+		fmt.Printf("key: %s, value : %s\n", ev.Key, ev.Value)
+	}
+
+
+	/*
+	ch,err := cli.KeepAlive(context.TODO(), resp.ID)
+	for {
+		c := <-ch
+		fmt.Println("c: ", c)
+	}
+	 */
+
+
 }
 
 var n = 0
@@ -75,6 +132,8 @@ func worker(key string, id int) error {
 		log.Println("new cli error:", err)
 		return err
 	}
+
+	defer cli.Close()
 
 	sess, err := concurrency.NewSession(cli)
 	if err != nil {
@@ -201,11 +260,14 @@ func testEtcdWatcher(){
 // 初步学习 etcd 的连接 以及put,get 方法
 func testEtcdPutGet(){
 
+
+
 	// 创建连接 etcd 的客户端
 	client, err := clientv3.New(clientv3.Config{
 		Endpoints:[]string{"127.0.0.1:2379"},
 		DialTimeout:time.Second*5,
 	})
+	
 	if err != nil {
 		fmt.Printf("connect to etcd failed, err : %v", err)
 		return
@@ -220,7 +282,7 @@ func testEtcdPutGet(){
 	// put
 	key := fmt.Sprintf("collect_log_%s_config", ip)
 	fmt.Println("key : ", key)
-	 confStr := `[{"path":"G:/logs/mylog.log","topic":"web_log"}]`
+	 confStr := `[{"path":"G:/logs/mylog.log","topic":"web_log1"}]`
 	// confStr := `[{"path":"E:/logs/s4.log","topic":"s4_log"},{"path":"G:/logs/mylog.log","topic":"web_log"}]`
 	// confStr := `[{"path":"E:/logs/s4.log","topic":"s4_log"},{"path":"G:/logs/mylog.log","topic":"web_log"},{"path":"C:/logs/test.log","topic":"test"} ]`
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
