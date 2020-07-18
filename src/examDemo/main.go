@@ -227,7 +227,7 @@ func main() {
 
 	// testInterface4()
 
-	// testInterface5()
+	testInterface5()
 
 	// testInterface6()
 
@@ -281,7 +281,7 @@ func main() {
 
 	// testLog()
 
-	testTryLock()
+	// testTryLock()
 
 }
 
@@ -959,6 +959,13 @@ func testInterface6(){
 func testInterface5(){
 	printType(S1{})
 	printType(S2{})
+
+	/*  打印信息
+		S1.f()
+		S1.g()
+		S2.f()
+		S1.g()
+	 */
 
 	/* 假如 S2 没有实现 f() 方法
 	var i I
