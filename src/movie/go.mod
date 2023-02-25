@@ -8,7 +8,7 @@ require (
 	github.com/micro/go-micro/v2 v2.5.0
 	github.com/sirupsen/logrus v1.4.2
 	go.uber.org/zap v1.13.0
-	golang.org/x/net v0.0.0-20200222125558-5a598a2470a0
+	golang.org/x/net v0.7.0
 	google.golang.org/protobuf v1.21.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v2 v2.2.4 // indirect
